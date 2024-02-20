@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /*height: 100%;*/
+    background-color: #e5e5e5;
+    font-family: Roboto-Regular;
+}
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #e5e5e5;
+}
+
+.form {
+    display: flex;
+    border-radius: 8px;
+}
+.logo{
+    width: 450px;
+    height: 210px;
+    display: flex;
+}
+
+.login {
+    display: flex;
+    width: 370px;
+    margin-bottom: 20px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    background-color: #c4c4c4;
+    text-align: center;
+    font-size: 12pt;
+    background-image: url("../img/1.png");
+    background-repeat: no-repeat;   
+    background-position: 4px; 
+  }
+.pass {
+    display: flex;
+    width: 370px;
+    margin-bottom: 35px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    background-color: #c4c4c4;
+    text-align: center;
+    font-size: 12pt;
+    background-image: url("icons/2.png");
+    background-repeat: no-repeat;   
+    background-position: 4px; 
+}
+
+.enter {
+    display: flex;
+    padding: 14px 16px;
+    background-color: rgba(0, 0, 0, 0.53);
+    width: 200px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12pt;
+    justify-content: center;
+    font-family: Roboto-Bold;
+    font-weight: bold;
+    margin-left:24%;
+}
+
+.close-button {
+    position: fixed;
+    top: 0px;
+    right: 7px;
+    text-decoration: none;
+    color: black;
+    font-size: 44px;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: Roboto-Regular;
+    src: url("fonts/Roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: Roboto-Bold;
+    src: url("fonts/Roboto/Roboto-Bold.ttf");
+}
+@font-face {
+    font-family: Roboto-Medium;
+    src: url("fonts/Roboto/Roboto-Medium.ttf");
+}

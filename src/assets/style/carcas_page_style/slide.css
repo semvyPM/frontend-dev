@@ -1,0 +1,18 @@
+/* скрываем чекбоксы и блоки с содержанием */
+.hide, .hide + label ~ div  {
+    display: none; 
+}
+/* вид текста label */
+.hide + label,
+.hide:checked + label {
+    cursor: pointer;
+}
+/* вид текста label при активном переключателе */
+.hide:checked + label {
+    border-bottom: 0;
+}
+/* когда чекбокс активен показываем блоки с содержанием  */
+.hide:checked + label + div {
+    display: block; 
+    
+}
