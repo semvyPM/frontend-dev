@@ -5,17 +5,18 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    /*height: 100%;*/
-    background-color: #e5e5e5;
+    background-color: #f6f6f5;
     font-family: Roboto-Regular;
 }
 
 .auth-container {
+    margin-top: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    background-color: #e5e5e5;
+    position: relative;
+    top: 15vh;
 }
 
 .form {
@@ -28,48 +29,62 @@ body {
     display: flex;
 }
 
-.login {
+.login, .pass {
     display: flex;
-    width: 370px;
-    margin-bottom: 20px;
+    width: 430px;
     padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    background-color: #c4c4c4;
     text-align: center;
     font-size: 12pt;
-    background-image: url("../img/1.png");
-    background-repeat: no-repeat;   
-    background-position: 4px; 
-  }
-.pass {
-    display: flex;
-    width: 370px;
-    margin-bottom: 35px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    background-color: #c4c4c4;
-    text-align: center;
-    font-size: 12pt;
-    background-image: url("icons/2.png");
-    background-repeat: no-repeat;   
-    background-position: 4px; 
+    background-repeat: no-repeat;
+    background-position: 4px;
+    font-weight: bold;
+    outline: none;
+    padding-left: 5px;
+    color: darkgreen;
+    background-color: white;
+    border: 2px solid darkgreen;
+    padding-left: 5px;
 }
+
+.login:focus, .pass:focus {
+    border: 2px solid #e0d20f;
+}
+
+.login::placeholder, .pass::placeholder {
+    color: #87ad87;
+}
+
+.login {
+    margin-bottom: 20px;
+    background-image: url("@/assets/img/1.png");
+}
+
+.pass {
+    margin-bottom: 35px;
+    background-image: url("@/assets/img/2.png");
+}
+
 
 .enter {
     display: flex;
-    padding: 14px 16px;
-    background-color: rgba(0, 0, 0, 0.53);
-    width: 200px;
-    border: none;
-    border-radius: 4px;
+    /*padding: 14px 16px;*/
+    width: 240px;
+    outline: none;
     cursor: pointer;
     font-size: 12pt;
+    border: 0;
     justify-content: center;
     font-family: Roboto-Bold;
     font-weight: bold;
     margin-left:24%;
+    line-height: 30px;
+
+
+    height: 35px;
+    border-radius:7px;
+    color: #2a622a;
+    background-color: #ffc945;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 
 .close-button {
@@ -84,14 +99,14 @@ body {
 
 @font-face {
     font-family: Roboto-Regular;
-    src: url("fonts/Roboto/Roboto-Regular.ttf");
+    src: url("@/assets/fonts/Roboto/Roboto-Regular.ttf");
 }
 
 @font-face {
     font-family: Roboto-Bold;
-    src: url("fonts/Roboto/Roboto-Bold.ttf");
+    src: url("@/assets/fonts/Roboto/Roboto-Bold.ttf");
 }
 @font-face {
     font-family: Roboto-Medium;
-    src: url("fonts/Roboto/Roboto-Medium.ttf");
+    src: url("@/assets/fonts/Roboto/Roboto-Medium.ttf");
 }

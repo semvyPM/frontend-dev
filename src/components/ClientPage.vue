@@ -7,34 +7,41 @@ import Header from "@/components/Header.vue";
 
 <template>
 <Header/>
-<div class="nav">
-  <div class="back"></div>
-  <div class="carcass">
-    <p>
-      Каркас
-    </p>
+  <div class="nav">
+    <div class="back"></div>
+    <div class="carcass">
+      <p>
+        Карточка клиента
+      </p>
+    </div>
   </div>
-</div>
-<main>
-  <form action="">
-    <div class="adress">
-      <input type="text" placeholder="Введите адрес объекта строительства">
-      <input type="button" value="Сохранить">
-
-      <input type="reset" value="Очистить расчет">
-    </div>
-    <h3>Исходные данные</h3>
-    <div class="table floorsInput">Количество этажей <input type="number" placeholder="Введите число этажей" v-model="floorsCount" @change="duplicateFloors"> </div>
-    <div v-for="(currentFloor, index) in floors" :key="index">
-      <h3>Этаж: {{ index + 1 }}</h3>
-      <Floor :currentFloor="index"></Floor>
+  <main>
+    <form action="">
+      <input type="submit" value="Создать расчет">
+    </form>
+    <div class="line">
+      <hr>
     </div>
 
+    <div class="client">
+      <div class="calculation">
+        <div class="container"> <div> Расчет №2 </div> </div>
+        <div class="container"> <div> 02.02.2021 </div> </div>
+        <div class="container"> <div> Актуален </div> </div>
+        <div class="container"> <div> Адрес <br> строительства </div> </div>
+      </div>
+      <div class="buttons">
+        <div class="copy">
+          <img src="@/assets/img/copy.png" alt="">
+        </div>
+        <div class="delete">
+          <img src="@/assets/img/delete.png" alt="">
+        </div>
+      </div>
 
-
-    <input type="submit" value="Рассчитать">
-  </form>
-</main>
+    </div>
+    <hr>
+  </main>
 </template>
 
 <script>

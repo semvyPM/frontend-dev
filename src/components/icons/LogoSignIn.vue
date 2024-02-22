@@ -1,7 +1,7 @@
 <template>
 
 <svg width="100%"
-     height="100%" viewBox="0 0 1455 510" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+     height="100%" viewBox="0 0 1460 440" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <path d="M0 0H1460V514H0V0Z" fill="white"/>
   <path d="M534.5 7.5H1452.5V506.5H534.5V7.5Z" fill="white" stroke="#E0ECEA" stroke-width="15"/>
   <path d="M0 0H527V514H0V0Z" fill="url(#pattern0)"/>

@@ -1,11 +1,12 @@
 <script setup>
 import Logo from './icons/Logo.vue';
+import LogoSignIn from "@/components/icons/LogoSignIn.vue";
 </script>
 
 <template>
 <div class="auth-container">
   <div class="logo">
-    <Logo/>
+    <LogoSignIn />
   </div>
   <!-- Форма авторизации -->
   <div class="form">
@@ -18,7 +19,7 @@ import Logo from './icons/Logo.vue';
 </div>
 <!-- Крестик закрытия -->
 <div>
-  <a href="#" class="close-button">&times;</a>
+  <span class="close-button" @click="goBack">&times;</span>
 </div>
 </template>
 
@@ -35,6 +36,9 @@ export default {
     };
   },
   methods: {
+    goBack() {
+      window.history.go(-1);
+    },
     async login(){
       try {
         const response = await axios.post("http://localhost:8080/api/users/authuser", {
@@ -43,8 +47,7 @@ export default {
         });
 
         if (response.data) {
-          alert("ok");
-          this.$router.push({name: "carcasPage"});
+          this.$router.push({name: "clientsPage"});
         } else {
           alert(response.data.message);
         }
@@ -64,10 +67,10 @@ export default {
 @import '../assets/style/index_page_style/responsive.css';
 </style>
 
-<!--<style>-->
-<!--  @import url(http://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);-->
-<!--</style>-->
+<style>
+  @import url(http://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
+</style>
 
-<!--<style>-->
-<!--  @import url(http://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);-->
-<!--</style>-->
+<style>
+  @import url(http://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
+</style>

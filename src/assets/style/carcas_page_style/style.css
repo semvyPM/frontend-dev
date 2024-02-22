@@ -9,8 +9,7 @@
 */
 
 body {
-    /*min-height: 1693px;*/
-    background-color: #e5e5e5;
+    background-color: #f6f6f5;
     font-family: Roboto-Regular;
 }
 
@@ -31,32 +30,36 @@ body {
     color: rgba(0, 0, 0, 0.53);
 }
 .header{
-    padding: 10px;
     display: grid;
     grid-template-columns: 23% 37% 35% 5%;
-    
+    border: 1px solid #c3d0ce;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border-bottom: 1.5px solid darkgreen;
 }
 
 .client_data{
     font-size: 1em;
+    color: #004600;
     padding-left: 50px;
+    /*color: #3d4b58;*/
     font-family: Roboto-Medium;
 }
 .employee{
+    color: #004600;
     font-size: 1em;
     text-align: right;
-    color: rgba(0, 0, 0, 0.53);
+    /*color: rgba(0, 0, 0, 0.53);*/
 }
 .exit{
     margin-left: auto;
     margin-right: 0;
     width: 20px;
     height: 20px;
-    background-image: url("img/x.png");
+    background-image: url("@/assets/img/x.png");
     background-size: 100%;
 }
 .nav{
-   
+
     display: grid;
     grid-template-columns: 50% 50%;
     font-size: 2em;
@@ -67,11 +70,11 @@ body {
     margin-top: 10px;
     width: 40px;
     height: 40px;
-    background-image: url("img/back.png");
+    background-image: url("@/assets/img/back.png");
     background-size: 100%;
 }
 .carcass{
-    margin: 0;
+    color: #004600;
 }
 main{
     margin-left: 40px;
@@ -87,19 +90,84 @@ main{
 }
 .adress > input[type='text']{
     padding-left: 20px;
+    outline: none;
+    background-color: white;
+    color: darkgreen;
+    border: 2px solid #2a622a;
 }
-input{
+.adress input[type='text']::placeholder {
+    color: #8a8f89;
+}
+input {
+    margin-top: 7px;
     height: 30px; 
     border: 0;
-    background-color: rgba(0, 0, 0, 0.226);
     font-weight: bold;
+    padding-left: 5px;
 }
-input[type='button'],input[type='reset']{
+
+
+
+.floor {
+    background-color: #edf1ec;
+    padding: 10px;
+}
+
+.floor input{
+    outline: none;
+    color: darkgreen;
+    background-color: white;
+    border: 2px solid darkgreen;
+    padding-left: 5px;
+}
+
+h3 {
+    color: #0d4d0d;
+}
+
+.floorsInput input[type="number"] {
+    color: darkgreen;
+    border: 2px solid #f3a809;
+    outline: none;
+    padding-left: 5px;
+}
+
+
+.floorsInput input[type="text"]:hover, input[type="number"]:hover {
+    color: darkgreen;
+    border: 2px solid darkgreen;
+    padding-left: 5px;
+}
+
+.formItemHeader {
+    font-weight: bold;
+    color: darkgreen;
+}
+
+.floor select{
+    outline: none;
+    color: darkgreen;
+    font-weight: bold;
+    background-color: white;
+    border: 2px solid darkgreen;
+
+}
+input[type='button'], input[type='reset']{
     border-radius:7px;
-    background-color: rgba(0, 0, 0, 0.38);
+    /*box-shadow: 0 1px 2px #5e5e5e;*/
+}
+input[type='button']{
+    color: #f1f1f1;
+    background-color: #597359;
+}
+input[type='reset'], input[type='submit']{
+    color: #2a622a;
+    background-color: #ffc945;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 select{
-    height: 30px; 
+    margin-top: 7px;
+    height: 37.5px;
     border: 0;
     background-color: rgba(0, 0, 0, 0.226);
 }
@@ -115,45 +183,120 @@ select{
 }
 .plus_text{
     padding-top: 5px;
+    font-weight: bold;
+    color: #135213;
 }
-.circle{
+.circle {
     width: 30px;
     height: 30px;
-    background-color:  rgba(0, 0, 0, 0.38);
+    background-color: #ffc945;
     border-radius: 20px;
     text-align: center;
     font-size: 25px;
+    color: #597359;
+    border: 1.5px solid #ffc945;
+    box-shadow: rgb(19, 82, 19) 0 1px 1px 0px, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
+    /*background-color: #597359;*/
+    border-radius: 50%;
+    text-align: center;
+    padding-bottom: 2px;
+
+
 }
-.table2{
+.table2 {
+    margin-top: 10px;
     display: grid;
     grid-template-columns: 10% 10% 10% ;
     grid-gap: 20px;
     text-align: center;
 }
-.plus1{
+.plus1 {
     cursor: pointer;
     width: 30px;
     height: 30px;
     margin-left: 31%;
+    color: #597359;
     font-size: 25px;
+    border: 1.5px solid #597359;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    /*background-color: #597359;*/
+    border-radius: 50%;
+    text-align: center;
+    padding-bottom: 2px;
 }
-input[type='submit']{
+input[type='submit'] {
     width: 200px;
-    height: 40px;
+    height: 30px;
     margin-top: 20px;
     margin-left: 30%;
-    border-radius: 7px;
-    background-color: rgba(0, 0, 0, 0.38);
+    border-radius:7px;
+    box-shadow: 0 1px 2px #5e5e5e;
 }
+
+/* Для страницы "Клиент" */
+
+/* Главный блок расчетов */
+.client{
+    margin-top: 50px;
+    width: 100%;
+    min-height: 200px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+
+}
+
+/* Блок вывода расчетов */
+.calculation{
+    display: flex;
+}
+
+/* Блок кнопок */
+.buttons{
+    display: grid;
+    grid-template-columns: 15% 20%;
+}
+
+.copy img{
+    margin-top: 20px;
+    margin-left: 10px;
+    width: 35px;
+    height: 40px;
+
+}
+
+.delete img{
+    width: 35px;
+    height: 45px;
+    margin-top: 15px;
+}
+
+/* Контейнеры */
+.container{
+    width: 25%;
+    height: 55px;
+    background-color: rgba(0, 0, 0, 0.38);
+    margin-top: 10px;
+    margin-right: 10px;
+    text-align: center;
+    font-family: Roboto-Medium;
+    font-size: 18px;
+    display: table;
+}
+.container div{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+
 @font-face {
     font-family: Roboto-Regular;
-    src: url("fonts/Roboto/Roboto-Regular.ttf");
+    src: url("@/assets/fonts/Roboto/Roboto-Regular.ttf");
 }
 @font-face {
     font-family: Roboto-Bold;
-    src: url("fonts/Roboto/Roboto-Bold.ttf");
+    src: url("@/assets/fonts/Roboto/Roboto-Bold.ttf");
 }
 @font-face {
     font-family: Roboto-Medium;
-    src: url("fonts/Roboto/Roboto-Medium.ttf");
+    src: url("@/assets/fonts/Roboto/Roboto-Medium.ttf");
 }
