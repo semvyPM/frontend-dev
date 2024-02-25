@@ -218,11 +218,9 @@ export default {
   },
   methods: {
     duplicateBlockWindow() {
-      // this.$emit('duplicateBlock', this.currentFloor);
       this.floorData.itemsWindow.push({ heightWindow: '', widthWindow: '', quantityWindow: '' });
     },
     duplicateBlockDoorsOut() {
-      // this.$emit('duplicateBlock', this.currentFloor);
       this.floorData.itemsDoorsOut.push({ heightDoorsOut: '', widthDoorsOut: '', quantityDoorsOut: '' });
     },
     duplicateBlockDoorsInner() {

@@ -41,6 +41,7 @@ export default {
     },
     async login(){
       try {
+        alert(this.userlogin);
         const response = await axios.post("http://localhost:8080/api/users/authuser", {
           userlogin: this.userlogin,
           userpassword: this.userpassword

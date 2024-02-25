@@ -1,7 +1,4 @@
 <script setup>
-import Logo from './icons/Logo.vue';
-import Floor from "@/components/Floor.vue";
-import LogoTest from "@/components/icons/Logo.vue";
 import Header from "@/components/Header.vue";
 </script>
 
@@ -46,31 +43,8 @@ import Header from "@/components/Header.vue";
 
 <script>
 export default {
-  components: {
-    Floor
-  },
-  data() {
-    return {
-      floorsCount: 1, // Начальное количество этажей
-      floors: [{}] // Массив с данными для каждого этажа, начинаем с одного пустого объекта
-    };
-  },
   methods: {
-    duplicateFloors() {
-      // Обновляем количество этажей в соответствии с введенным числом
-      const newCount = Number(this.floorsCount);
-      if (!isNaN(newCount) && newCount >= 0) {
-        const currentCount = this.floors.length;
 
-        if (newCount > currentCount) {
-          for (let i = currentCount; i < newCount; i++) {
-            this.floors.push({}); // Добавляем пустой объект для нового этажа
-          }
-        } else if (newCount < currentCount) {
-          this.floors = this.floors.slice(0, newCount); // Обрезаем массив до нового количества этажей
-        }
-      }
-    }
   }
 }
 </script>
