@@ -40,25 +40,45 @@ export default {
       window.history.go(-1);
     },
     async login(){
-      try {
-        alert(this.userlogin);
-        const response = await axios.post("http://localhost:8080/api/users/authuser", {
-          userlogin: this.userlogin,
-          userpassword: this.userpassword
-        });
+      const auth = {
+        username: this.userlogin,
+        password: this.userpassword
+      };
+      const response = await axios.post("http://localhost:8080/auth/sign-in", auth);
 
-        if (response.data) {
-          this.$router.push({name: "clientsPage"});
+      if (response.data) {
+        this.$store.commit('setToken', response.data.token);
+        this.$store.dispatch('loadToken');
+        const token = this.$store.state.token
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        const responseUser = await axios.get('http://localhost:8080/api/users/get', config);
+
+        if (responseUser.data) {
+          let user = responseUser.data;
+              console.log("USER: " + user);
+              this.$store.commit('setUser', user);
+              console.log(response.data.token);
+              this.$router.push({name: "clientsPage"});
+
+              // Обработка данных о пользователе
         } else {
-          alert(response.data.message);
+          console.log(response.data.message);
+          console.log("clear token");
+          this.$store.commit('clearToken');
+          // Обработка ошибки запроса
         }
-      } catch (error) {
-        this.error = error.response.data.message;
-        console.log(error)
+      } else {
+        console.log(response.data.message);
       }
     },
   },
   mounted() {
+    // this.$store.dispatch('loadToken');
+    // this.$store.dispatch('loadUser');
+    // this.$store.commit('clearUser');
+    // this.$store.commit('clearToken');
   }
 };
 </script>

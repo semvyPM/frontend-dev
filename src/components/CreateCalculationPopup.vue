@@ -30,7 +30,6 @@
 
 <script>
 import axios from "axios";
-import {createCustomer} from "@/api.js";
 
 export default {
   data() {
@@ -48,16 +47,28 @@ export default {
       this.$emit('close');
     },
     async createCustomer() {
-      const customer = {
-        lastName: this.customer_lastname,
-        firstName: this.customer_firstname,
-        secondName: this.customer_patronymic,
-        phone: this.customer_phone,
-        email: this.customer_email,
-        adress: this.customer_address,
-        usersId: {id: this.$store.state.user.id}
+      try {
+        const response = await axios.post("http://localhost:8080/api/clients/create", {
+          lastName: this.customer_lastname,
+          firstName: this.customer_firstname,
+          secondName: this.customer_patronymic,
+          phone: this.customer_phone,
+          email: this.customer_email,
+          adress: this.customer_address,
+          usersId: {id: this.$store.state.user.id}
+        });
+
+        if (response.data) {
+          console.log(response.data);
+          console.log(response.data.id);
+          this.$router.push({path: "/client/" + response.data.id});
+        } else {
+          alert(response.data.message);
+        }
+      } catch (error) {
+        this.error = error.response.data.message;
+        console.log(error)
       }
-      await createCustomer(customer);
     }
   }
 }

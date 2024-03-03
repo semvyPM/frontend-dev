@@ -1,11 +1,7 @@
-<script setup>
-import Header from "@/components/Header.vue";
-</script>
-
 <template>
   <Header/>
   <div class="nav">
-    <div class="back"></div>
+    <div class="back" @click="goToSignIn"></div>
     <div class="carcass">
       <p>
         Клиенты
@@ -14,38 +10,45 @@ import Header from "@/components/Header.vue";
   </div>
   <main>
 
-
-    <input type="button" value="Создать клиента" @click="togglePopup">
-    <CreateUserPopup v-if="showPopup" @close="showPopup = false"/>
-
-    <div class="card-container">
-      <div class="card">Виссарионов Амуджалибай Хабирбековиджович</div>
-      <div class="card">Иванов Иван Иванович</div>
-      <div class="card">Иванов Иван Иванович</div>
-      <div class="card">Иванов Иван Иванович</div>
-      <div class="card">Иванов Иван Иванович</div>
-      <div class="card">Иванов Иван Иванович</div>
-      <div class="card">Иванов Иван Иванович</div>
-      <div class="card">Иванов Иван Иванович</div>
-      <div class="card">Иванов Иван Иванович</div>
-      <div class="card">Иванов Иван Иванович</div>
-      <div class="card">Иванов Иван Иванович</div>
-      <div class="card">Иванов Иван Иванович</div>
+    <div class="adress">
+      <input type="button" value="Создать клиента" @click="togglePopup">
     </div>
+      <CreateUserPopup v-if="showPopup" @close="showPopup = false"/>
+
+      <div class="card-container">
+        <div v-for="client in clients" :key="client.id">
+          <div class="card" v-if="client" @click="goToClient(client.id)">{{ client.lastName }} {{ client.firstName }} {{ client.secondName }}</div>
+        </div>
+      </div>
+
   </main>
 </template>
 
 <script>
 import CreateUserPopup from "@/components/CreateUserPopup.vue";
+import Header from "@/components/Header.vue";
+import axios from "axios";
+import {getClient, getClients} from "@/api.js";
 
 export default {
   components: {
-    CreateUserPopup
+    CreateUserPopup,
+    Header
   },
   data() {
     return {
-      showPopup: false
+      showPopup: false,
+      clients: []
     };
+  },
+  async mounted() {
+    getClients()
+        .then(data => {
+          this.clients = data;
+        })
+        .catch(error => {
+          console.error("Произошла ошибка: ", error);
+        });
   },
   methods: {
     togglePopup() {
@@ -54,6 +57,12 @@ export default {
     saveAndRedirect() {
       alert("saveAndRedirect");
     },
+    goToClient(id) {
+      this.$router.push({ path: '/client/' + id });
+    },
+    goToSignIn() {
+      this.$router.push({ name: 'signIn' });
+    }
   }
 }
 </script>
