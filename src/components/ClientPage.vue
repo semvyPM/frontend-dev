@@ -12,14 +12,14 @@
     <form action="">
       <div class="create-calculation-button">
         <input type="button" style="cursor: pointer;" value="Создать расчет" @click="togglePopup">
-        <ConstructionElementPopup v-if="showPopup" :id="id" :createMode="createMode" @close="showPopup = false"/>
+        <ConstructionElementPopup v-if="showPopup" :idclient="id" :createMode="createMode" @close="showPopup = false"/>
       </div>
     </form>
+    <div v-for="calculation in calculations" :key="calculation.id">
     <div class="client-bg">
       <hr>
 
       <div class="client">
-      <div v-for="calculation in calculations" :key="calculation.id">
           <div class="calculation" v-if="calculation && calculation.сalculationStateId">
             <div class="container" @click="goToCalculation(calculation.id, client.id)"> <div> Расчет №{{ calculation.number }} </div></div>
             <div class="container"> <div> {{ calculation.createdDate }} </div> </div>
@@ -35,10 +35,9 @@
             </div>
           </div>
       </div>
-
       </div>
+      <hr>
     </div>
-    <hr>
   </main>
 </template>
 
@@ -59,7 +58,7 @@ export default {
       client: {},
       calculations: [{}],
       showPopup: false,
-      createMode: "false"
+      createMode: "true"
     }
   },
   async mounted() {

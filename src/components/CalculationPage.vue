@@ -4,7 +4,7 @@
     <router-link :to="'/client/' + idclient"><div class="back"></div></router-link>
     <div class="carcass">
       <p>
-        Расчет <input type="button" :value="calculation && calculation.сalculationStateId ? calculation.сalculationStateId.stateName : 'не установлен'">
+        Расчет <input type="button" :value="calculation && calculation.сalculationStateId ? calculation.сalculationStateId.stateName : 'не установлен'" >
       </p>
 
     </div>
@@ -29,9 +29,15 @@
         <div class="edit">
           <img src="@/assets/img/edit.png" alt="">
         </div>
-        <input type="button" value="Добавить конструктивный элемент">
+        <input type="button" value="Добавить конструктивный элемент" @click="togglePopup">
+        <ConstructionElementPopup v-if="showPopup" :idclient="idclient" :createMode="createMode" @close="showPopup = false"/>
       </div>
       <div class="report">
+        <table style="border: 1px solid black">
+          <tr><td>Результат</td><td>Результат</td></tr>
+          <tr><td>Результат</td><td>Результат</td></tr>
+        </table>
+        <input @click="exportToExcel" type="button" value="Экспорт в Excel">
 
       </div>
     </form>
@@ -40,7 +46,9 @@
 <script>
 import Header from "@/components/Header.vue";
 import axios from "axios";
-import {getCalculation} from "@/api.js";
+import { getCalculation, getFloors, getBasementData } from "@/api.js";
+import { saveAs } from 'file-saver';
+import * as ExcelJS from "exceljs";
 
 export default {
   components: {Header},
@@ -51,7 +59,11 @@ export default {
   data() {
     return {
       clientData: true,
-      calculation: {}
+      calculation: {},
+      floors: {},
+      basement: {},
+      createMode: "false",
+      showPopup: false
     }
   },
   async mounted() {
@@ -62,11 +74,36 @@ export default {
         .catch(error => {
           console.error("Произошла ошибка: ", error);
         });
+    getFloors(this.idcalculation)
+        .then(data => {
+          this.floors = data;
+          console.log(this.floors);
+        })
+        .catch(error => {
+          console.error("Произошла ошибка: ", error);
+        });
   },
   methods: {
     backToClient() {
       this.$router.push({ name: "clientPage" });
+    },
+    togglePopup() {
+      this.showPopup = !this.showPopup
+    },
+    async exportToExcel() {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Sheet 1');
+
+      // Добавление данных в таблицу
+      worksheet.addRow(['Имя', 'Фамилия', 'Email']);
+      worksheet.addRow(['John', 'Doe', 'john.doe@example.com']);
+
+      // Генерация и сохранение Excel файла
+      const buffer = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      saveAs(blob, 'exported_data.xlsx');
     }
+
   }
 }
 </script>
@@ -79,4 +116,5 @@ export default {
 </style>
 <script setup>
 import Header from "@/components/Header.vue";
+import ConstructionElementPopup from "@/components/ConstructionElementPopup.vue";
 </script>

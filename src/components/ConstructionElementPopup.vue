@@ -12,7 +12,7 @@
           <img src="@/assets/img/foundation.png" alt="">
           <h3>Фундамент</h3>
         </div>
-        <div @click="redirectToRoofPage" style="cursor: pointer;" class="element">
+        <div style="cursor: pointer;" class="element">
           <img src="@/assets/img/roof.png" alt="">
           <h3>Крыша</h3>
         </div>
@@ -24,7 +24,7 @@
 <script>
 export default {
   props: {
-    id: String,
+    idclient: String,
     createMode: String
   },
   mounted() {
@@ -40,12 +40,12 @@ export default {
     },
     redirectToFoundationPage() {
       // Используем маршрутизатор для перенаправления
-      this.$router.push({ name: 'foundationPage', props: { id: this.id }});
+      this.$router.push({ name: 'foundationPage', params: { id: this.id, createMode: this.createMode }});
     },
-    redirectToRoofPage() {
-      // Используем маршрутизатор для перенаправления
-      this.$router.push({ name: 'roofPage', props: { id: this.id }});
-    },
+    // redirectToRoofPage() {
+    //   // Используем маршрутизатор для перенаправления
+    //   this.$router.push({ name: 'roofPage', props: { id: this.id }});
+    // },
   }
 }
 

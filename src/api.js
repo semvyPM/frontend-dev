@@ -95,3 +95,33 @@ export const createCustomer = async (customer) => {
         console.log(error)
     }
 }
+
+export const getFloors = async (idcalculation) => {
+    const token = getToken();
+    try {
+        let response = await instance.get('/calculations/floors/' + idcalculation, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+        });
+        console.log("ok or huyok: " + response.status);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const getBasementData = async (idcalculation) => {
+    const token = getToken();
+    try {
+        let response = await instance.get('/calculations/basements/' + idcalculation, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+        });
+        console.log("ok or huyok: " + response.status);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}

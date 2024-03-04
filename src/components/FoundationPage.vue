@@ -39,7 +39,8 @@ export default {
     Floor
   },
   props: {
-    id: String
+    id: String,
+    createMode: String
   },
   methods: {
     backToClient() {
