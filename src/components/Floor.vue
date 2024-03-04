@@ -5,26 +5,23 @@
 <template>
 <!--  Компонент этажа-->
   <div class="floor">
-    <div class="table">Высота этажа <input type="number" class="outBlock"  placeholder=""> </div>
-    <div class="table">Периметр внешних стен <input type="number" class="outBlock" placeholder=""></div>
-    <div class="table">Площадь основания <input type="number" class="outBlock" placeholder=""></div>
+    <div class="table">Высота этажа (м) <input type="number" class="outBlock"  placeholder="Не более 3 метров" v-model="floorData.floorMainData.heightFloor" max="3"> </div>
+    <div class="table">Периметр внешних стен (м) <input type="number" class="outBlock" placeholder="" v-model="floorData.floorMainData.perimetrOuterWalls"></div>
+    <div class="table">Площадь основания (м2) <input type="number" class="outBlock" placeholder="" v-model="floorData.floorMainData.baseArea"></div>
     <div class="table">
-      <span>Толщина внешних стен</span>
-      <select>
+      <span>Толщина внешних стен (мм)</span>
+      <select v-model="floorData.floorMainData.thicknessOuterWalls">
         <option value="100">100</option>
-        <option value="100">150</option>
-        <option value="100">200</option>
-        <option value="100">250</option>
       </select>
     </div>
-    <div class="table">Длина внутренних стен <input type="number" class="outBlock" placeholder=""></div>
+    <div class="table">Длина внутренних стен (м) <input type="number" class="outBlock" placeholder="" v-model="floorData.floorMainData.lengthInnerWalls"></div>
     <div class="table">
-      <span>Толщина внутренних стен</span>
-      <select>
-        <option value="100">100</option>
-        <option value="100">150</option>
-        <option value="100">200</option>
-        <option value="100">250</option>
+      <span>Толщина внутренних стен (мм)</span>
+      <select v-model="floorData.floorMainData.thicknessInnerWalls">
+        <option value="100">100 мм</option>
+        <option value="100">150 мм</option>
+        <option value="100">200 мм</option>
+        <option value="100">250 мм</option>
       </select>
     </div>
 
@@ -33,16 +30,16 @@
     <h3>Обшивки внешних стен</h3>
     <div class="table">
       <span>ОСБ</span>
-      <select>
-        <option value="9">ОСБ 9мм</option>
-        <option value="10">ОСБ 10мм</option>
-        <option value="15">ОСБ 15мм</option>
-        <option value="18">ОСБ 18мм</option>
+      <select v-model="floorData.dataOuterOverlap.OSB">
+        <option value="9">ОСБ 9 мм</option>
+        <option value="10">ОСБ 10 мм</option>
+        <option value="15">ОСБ 15 мм</option>
+        <option value="18">ОСБ 18 мм</option>
       </select>
     </div>
     <div class="table">
       <span>Парогидроизоляция</span>
-      <select>
+      <select v-model="floorData.dataOuterOverlap.steamAndWaterproofing">
         <option value="1">Ондутис</option>
         <option value="2">Пароизоляция Axton (b)</option>
         <option value="3">Пароизоляционная пленка Ютафол Н 96 Сильвер</option>
@@ -51,7 +48,7 @@
     </div>
     <div class="table">
       <span>Ветрозащита</span>
-      <select>
+      <select v-model="floorData.dataOuterOverlap.windProtection">
         <option value="1">Ветро-влагозащитная мембрана Brane A</option>
         <option value="2">Паропроницаемая ветро-влагозащита A Optima</option>
         <option value="3">Гидро-ветрозащита Тип А</option>
@@ -59,7 +56,7 @@
     </div>
     <div class="table">
       <span>Утеплитель</span>
-      <select>
+      <select v-model="floorData.dataOuterOverlap.insulation">
         <option value="1">Кнауф ТеплоКнауф 100 мм</option>
         <option value="2">Технониколь 100 мм</option>
         <option value="3">Эковер 100 мм</option>
@@ -79,7 +76,7 @@
         <br>
         <div class="table">
           <span>ОСБ</span>
-          <select >
+          <select v-model="floorData.osbInnerOvarlap">
             <option value="9">ОСБ 9мм</option>
             <option value="10">ОСБ 10мм</option>
             <option value="15">ОСБ 15мм</option>
@@ -101,9 +98,9 @@
         <br><br>
 
         <div class="table2" v-for="(itemWindow, indexWindow) in floorData.itemsWindow" :key="indexWindow">
-          <div>Высота</div>
-          <div>Ширина</div>
-          <div>Количество</div>
+          <div>Высота (м)</div>
+          <div>Ширина (м)</div>
+          <div>Количество (шт)</div>
           <input type="number" class="inBlock" placeholder="" v-model="itemWindow.heightWindow">
           <input type="number" class="inBlock" placeholder="" v-model="itemWindow.widthWindow">
           <input type="number" class="inBlock" placeholder="" v-model="itemWindow.quantityWindow">
@@ -118,9 +115,9 @@
         <div><span class="formItemHeader">Дверные проемы внешние</span></div>
         <br>
         <div class="table2" v-for="(itemDoorsOut, indexDoorOut) in floorData.itemsDoorsOut" :key="indexDoorOut">
-          <div>Высота</div>
-          <div>Ширина</div>
-          <div>Количество</div>
+          <div>Высота (м)</div>
+          <div>Ширина (м)</div>
+          <div>Количество (шт)</div>
           <input type="number" class="inBlock" placeholder="" v-model="itemDoorsOut.heightDoorsOut">
           <input type="number" class="inBlock" placeholder="" v-model="itemDoorsOut.widthDoorsOut">
           <input type="number" class="inBlock" placeholder="" v-model="itemDoorsOut.quantityDoorsOut">
@@ -133,9 +130,9 @@
         <div><span class="formItemHeader">Дверные проемы внутренние</span></div>
         <br>
         <div class="table2" v-for="(itemDoorsInner, indexDoorInner) in floorData.itemsDoorsInner" :key="indexDoorInner">
-          <div>Высота</div>
-          <div>Ширина</div>
-          <div>Количество</div>
+          <div>Высота (м)</div>
+          <div>Ширина (м)</div>
+          <div>Количество (шт)</div>
           <input type="number" class="inBlock" placeholder="" v-model="itemDoorsInner.heightDoorsInner">
           <input type="number" class="inBlock" placeholder="" v-model="itemDoorsInner.widthDoorsInner">
           <input type="number" class="inBlock" placeholder="" v-model="itemDoorsInner.quantityDoorsInner">
@@ -158,10 +155,10 @@
         <div class="table">
           ОСБ
           <select>
-            <option value="9">ОСБ 9мм</option>
-            <option value="10">ОСБ 10мм</option>
-            <option value="15">ОСБ 15мм</option>
-            <option value="18">ОСБ 18мм</option>
+            <option value="9">ОСБ 9 мм</option>
+            <option value="10">ОСБ 10 мм</option>
+            <option value="15">ОСБ 15 мм</option>
+            <option value="18">ОСБ 18 мм</option>
           </select>
         </div>
         <div class="table">
@@ -208,21 +205,21 @@ export default {
         overlapInputsShow: false,
         windowsTableShow: false,
         currentFloor: this.currentFloor,
+        floorMainData: [{heightFloor: 0, perimetrOuterWalls: 0, baseArea: 0, thicknessOuterWalls: 0, lengthInnerWalls: 0, thicknessInnerWalls: 0}],
         itemsWindow: [{ heightWindow: '', widthWindow: '', quantityWindow: '' }],
         itemsDoorsOut: [{ heightDoorsOut: '', widthDoorsOut: '', quantityDoorsOut: '' }],
         itemsDoorsInner: [{ heightDoorsInner: '', widthDoorsInner: '', quantityDoorsInner: '' }],
-        osbInput: "",
-        overlapInputs: [{slabThickness: '', OSB: '', steamAndWaterproofing: '', windProtection: '', insulation: ''}]
-      }
+        osbInnerOvarlap: "",
+        dataOuterOverlap: [{OSB: '', steamAndWaterproofing: '', windProtection: '', insulation: ''}]
+      },
+      maxHeightFloor: 3
     };
   },
   methods: {
     duplicateBlockWindow() {
-      // this.$emit('duplicateBlock', this.currentFloor);
       this.floorData.itemsWindow.push({ heightWindow: '', widthWindow: '', quantityWindow: '' });
     },
     duplicateBlockDoorsOut() {
-      // this.$emit('duplicateBlock', this.currentFloor);
       this.floorData.itemsDoorsOut.push({ heightDoorsOut: '', widthDoorsOut: '', quantityDoorsOut: '' });
     },
     duplicateBlockDoorsInner() {

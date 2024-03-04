@@ -1,8 +1,6 @@
-// import './assets/style/index_page_style/responsive.css'
-// import './assets/style/index_page_style/style.css'
-
-
 import { createApp } from 'vue'
 import App from './App.vue'
+import store from './store/index.js';
+
 import router from "@/components/router.js";
-createApp(App).use(router).mount('#app')
+createApp(App).use(store).use(router).mount('#app')

@@ -1,14 +1,7 @@
-<script setup>
-import Logo from './icons/Logo.vue';
-import Floor from "@/components/Floor.vue";
-import LogoTest from "@/components/icons/Logo.vue";
-import Header from "@/components/Header.vue";
-</script>
-
 <template>
-<Header/>
+  <Header :client="this.id" :clientData="clientData"/>
   <div class="nav">
-    <div class="back"></div>
+    <div class="back"  @click="backToSignIn"></div>
     <div class="carcass">
       <p>
         Карточка клиента
@@ -17,59 +10,94 @@ import Header from "@/components/Header.vue";
   </div>
   <main>
     <form action="">
-      <input type="submit" value="Создать расчет">
+      <div class="create-calculation-button">
+        <input type="button" style="cursor: pointer;" value="Создать расчет" @click="togglePopup">
+        <ConstructionElementPopup v-if="showPopup" :idclient="id" :createMode="createMode" @close="showPopup = false"/>
+      </div>
     </form>
-    <div class="line">
+    <div v-for="calculation in calculations" :key="calculation.id">
+    <div class="client-bg">
+      <hr>
+
+      <div class="client">
+          <div class="calculation" v-if="calculation && calculation.сalculationStateId">
+            <div class="container" @click="goToCalculation(calculation.id, client.id)"> <div> Расчет №{{ calculation.number }} </div></div>
+            <div class="container"> <div> {{ calculation.createdDate }} </div> </div>
+            <div class="container"> <div> {{ calculation.сalculationStateId.stateName }} </div> </div>
+            <div class="container"> <div> {{ calculation.addressObjectConstractions }} </div> </div>
+          </div>
+          <div class="buttons">
+            <div class="copy" @click="copyCalculation(calculation.id)">
+              <img src="@/assets/img/copy.png" alt="">
+            </div>
+            <div class="delete" @click="deleteCalculation(calculation.id)">
+              <img src="@/assets/img/delete.png" alt="">
+            </div>
+          </div>
+      </div>
+      </div>
       <hr>
     </div>
-
-    <div class="client">
-      <div class="calculation">
-        <div class="container"> <div> Расчет №2 </div> </div>
-        <div class="container"> <div> 02.02.2021 </div> </div>
-        <div class="container"> <div> Актуален </div> </div>
-        <div class="container"> <div> Адрес <br> строительства </div> </div>
-      </div>
-      <div class="buttons">
-        <div class="copy">
-          <img src="@/assets/img/copy.png" alt="">
-        </div>
-        <div class="delete">
-          <img src="@/assets/img/delete.png" alt="">
-        </div>
-      </div>
-
-    </div>
-    <hr>
   </main>
 </template>
 
 <script>
+import ConstructionElementPopup from "@/components/ConstructionElementPopup.vue";
+import Header from "@/components/Header.vue";
+import axios from "axios";
+import {getClient, getCalculations, getClients, getCalculation} from "@/api.js";
+
 export default {
-  components: {
-    Floor
+  components: {Header, ConstructionElementPopup},
+  props: {
+    id: String
   },
   data() {
     return {
-      floorsCount: 1, // Начальное количество этажей
-      floors: [{}] // Массив с данными для каждого этажа, начинаем с одного пустого объекта
-    };
+      clientData: true,
+      client: {},
+      calculations: [{}],
+      showPopup: false,
+      createMode: "true"
+    }
+  },
+  async mounted() {
+    getClient(this.id)
+        .then(data => {
+          this.client = data;
+        })
+        .catch(error => {
+          console.error("Произошла ошибка: ", error);
+        });
+    getCalculations(this.id)
+        .then(data => {
+          this.calculations = data;
+        })
+        .catch(error => {
+          console.error("Произошла ошибка: ", error);
+        });
+
+    console.log("client " + this.client);
+    console.log("calculations " + this.calculations);
   },
   methods: {
-    duplicateFloors() {
-      // Обновляем количество этажей в соответствии с введенным числом
-      const newCount = Number(this.floorsCount);
-      if (!isNaN(newCount) && newCount >= 0) {
-        const currentCount = this.floors.length;
-
-        if (newCount > currentCount) {
-          for (let i = currentCount; i < newCount; i++) {
-            this.floors.push({}); // Добавляем пустой объект для нового этажа
-          }
-        } else if (newCount < currentCount) {
-          this.floors = this.floors.slice(0, newCount); // Обрезаем массив до нового количества этажей
-        }
-      }
+    backToSignIn() {
+      this.$router.push({ name: "clientsPage", props: { id: this.id } });
+    },
+    copyCalculation(id) {
+      console.log("copy " + id);
+    },
+    deleteCalculation(id) {
+      console.log("delete " + id);
+    },
+    togglePopup() {
+      this.showPopup = !this.showPopup
+    },
+    saveAndRedirect() {
+      alert("saveAndRedirect");
+    },
+    goToCalculation(idcalculation, idclient) {
+      this.$router.push({ path: "/calculation/" + idcalculation + "/" + idclient});
     }
   }
 }
