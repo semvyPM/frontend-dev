@@ -26,13 +26,23 @@ export const signOut = () => {
 
 export const getClients = async () => {
     const token = getToken();
-    const response = await instance.get('/clients/by-user/' + store.state.user.id, {
+    let response = await instance.get('/clients/by-user/' + store.state.user.id, {
         headers: {
             Authorization: `Bearer ${token}`
         },
     });
-    console.log("ok or huyok: " + response.status);
-    return response.data;
+    if (response.status === 403) {
+    console.log("токен истек");
+    alert("Сессия истекла!");
+    signOut();
+    }
+    else if (response.status === 200) {
+        return response.data;
+    }
+    else {
+        console.log("Ошибка выполнения запроса!");
+    }
+
 }
 
 export const getClient = async (id) => {
