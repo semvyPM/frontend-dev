@@ -82,6 +82,9 @@ export default {
         .catch(error => {
           console.error("Произошла ошибка: ", error);
         });
+    for (const floor in this.floors) {
+      console.log(floor)
+    }
   },
   methods: {
     backToClient() {
