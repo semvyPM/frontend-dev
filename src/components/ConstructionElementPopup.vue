@@ -25,10 +25,11 @@
 export default {
   props: {
     idclient: String,
-    createMode: String
+    createMode: String,
+    numbers: Number
   },
   mounted() {
-    console.log("popup " + this.createMode);
+    console.log("popup " + this.numbers);
   },
   methods: {
     closeModal() {
@@ -36,7 +37,7 @@ export default {
     },
     redirectToCarcasPage() {
       // Используем маршрутизатор для перенаправления
-      this.$router.push({ name: 'carcasPage', params: { id: this.id, createMode: this.createMode }});
+      this.$router.push({ name: 'carcasPage', params: { id: this.id, createMode: this.createMode, numbers: this.numbers }});
     },
     redirectToFoundationPage() {
       // Используем маршрутизатор для перенаправления

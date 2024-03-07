@@ -9,7 +9,7 @@ import RoofPage from "@/components/RoofPage.vue";
 import store from "@/store/index.js";
 const routes = [
     { path: '/', name: 'signIn', component: SignInPage },
-    { path: '/carcasPage/:id&createMode=:createMode',  name: 'carcasPage', component: CarcasPage, props: true  },
+    { path: '/carcasPage/:id&createMode=:createMode&number=:numbers',  name: 'carcasPage', component: CarcasPage, props: true  },
     { path: '/client/:id',  name: 'clientPage', component: ClientPage, props: true },
     { path: '/clients',  name: 'clientsPage', component: ClientsPage, props: true   },
     { path: '/calculation/:idcalculation/:idclient',  name: 'calculationPage', component: CalculationPage, props: true },
