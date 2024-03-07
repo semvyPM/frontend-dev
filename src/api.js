@@ -4,11 +4,25 @@ import router from "@/components/router.js";
 
 
 const instance = axios.create({
-    baseURL: "http://localhost:8080/api",
+    baseURL: "http://kalck.ru",
     headers: {
         "Content-Type": "application/json"
     }
 });
+
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE';
+axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+
+
+// axios.defaults.baseURL = 'http://kalck.ru';
+axios.defaults.withCredentials = true; // Разрешить передачу учетных данных (cookies, авторизацию)
+//
+// axios.interceptors.request.use((config) => {
+//     config.headers['Access-Control-Allow-Origin'] = 'http://kalck.ru';
+//     return config;
+// });
+
 
 const checkStatus = (response) => {
     if (response.status === 403) {
