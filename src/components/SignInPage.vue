@@ -25,7 +25,8 @@ import LogoSignIn from "@/components/icons/LogoSignIn.vue";
 
 <script>
 import axios from "axios";
-import router from "@/components/router.js";
+import router from "@/router.js";
+import {signIn} from "@/api.js";
 
 export default {
   data() {
@@ -44,34 +45,7 @@ export default {
         username: this.userlogin,
         password: this.userpassword
       };
-      const response = await axios.post("http://localhost:8080/auth/sign-in", auth);
-
-      if (response.data) {
-        this.$store.commit('setToken', response.data.token);
-        this.$store.dispatch('loadToken');
-        const token = this.$store.state.token
-        const config = {
-          headers: { Authorization: `Bearer ${token}` }
-        };
-        const responseUser = await axios.get('http://localhost:8080/api/users/get', config);
-
-        if (responseUser.data) {
-          let user = responseUser.data;
-              console.log("USER: " + user);
-              this.$store.commit('setUser', user);
-              console.log(response.data.token);
-              this.$router.push({name: "clientsPage"});
-
-              // Обработка данных о пользователе
-        } else {
-          console.log(response.data.message);
-          console.log("clear token");
-          this.$store.commit('clearToken');
-          // Обработка ошибки запроса
-        }
-      } else {
-        console.log(response.data.message);
-      }
+      signIn(this.userlogin, this.userpassword);
     },
   },
   mounted() {
