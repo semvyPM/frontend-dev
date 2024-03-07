@@ -93,7 +93,26 @@ export const createCustomer = async (customer) => {
             return null;
         }
     }
+}
 
+export const createCalculation = async (calculation) => {
+    const token = getToken();
+    const response = await instance.post("/calculations/create", calculation, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    });
+    if (response.status === 403) {
+        signOut();
+    }
+    else {
+        if (response.data) {
+            return response.data.id;
+        } else {
+            console.log(response.data.message);
+            return null;
+        }
+    }
 }
 
 export const getFloors = async (idcalculation) => {

@@ -16,11 +16,10 @@ import Header from "@/components/Header.vue";
   </div>
 </div>
 <main>
-  <form action="">
+  <form action="post" @submit.prevent="saveCalculation">
     <div class="adress">
-      <input type="text" placeholder="Введите адрес объекта строительства" :readonly="isReadOnly">
-      <input type="button" value="Сохранить" v-if="!isReadOnly">
-
+      <input type="text" placeholder="Введите адрес объекта строительства" v-model="addres" :readonly="isReadOnly">
+      <input type="button" value="Сохранить" @click="saveAddress" v-if="!isReadOnly">
       <input type="reset" value="Очистить расчет">
     </div>
     <h3>Исходные данные</h3>
@@ -29,28 +28,31 @@ import Header from "@/components/Header.vue";
       <h3>Этаж: {{ index + 1 }}</h3>
       <Floor :currentFloor="index"></Floor>
     </div>
-
-
-
-    <input type="submit" value="Рассчитать">
+    <input type="submit" value="Рассчитать"  @click="saveCalculation">
   </form>
 </main>
 </template>
 
 <script>
+import {getClient, createCalculation} from "@/api.js";
+
 export default {
   components: {
     Floor
   },
   props: {
     id: String,
-    createMode: String
+    createMode: String,
+    numbers: String,
+    calculationData: {}
   },
   data() {
     return {
       floorsCount: 1, // Начальное количество этажей
       floors: [{}], // Массив с данными для каждого этажа, начинаем с одного пустого объекта
-      isReadOnly: false
+      isReadOnly: false,
+      addres: "",
+      calculation: {customerId: {id: parseInt(this.id) }, addressObjectConstractions: "", number: this.numbers, createdDate: new Date(), calculationStateId: {id: 1}}
     };
   },
   mounted() {
@@ -85,6 +87,36 @@ export default {
     backToClient() {
       this.$router.push({ name: "clientPage", props: { id: this.id } });
     },
+    saveAddress() {
+      if (this.addres === "") {
+        console.log("нет")
+      }
+      else {
+        this.calculation.addressObjectConstractions = this.addres;
+        this.isReadOnly = !this.isReadOnly;
+        console.log(this.calculation);
+      }
+    },
+    saveCalculation() {
+      // if (this.addres === "") {
+      //   console.log("нет")
+      // }
+      // else {
+      //   createCalculation(this.calculation)
+      //       .then(data => {
+      //         this.calculation = data;
+      //         this.$router.push({ path: "/calculation/" + this.calculation.id + "/" + this.id});
+      //       })
+      //       .catch(error => {
+      //         console.error("Произошла ошибка: ", error);
+      //       });
+      //   console.log(this.calculation);
+      // }
+      console.log("FLOORS")
+      for (const fl in this.floors) {
+        console.log(fl);
+      }
+    }
   }
 }
 </script>

@@ -12,6 +12,9 @@
       <span>Толщина внешних стен (мм)</span>
       <select v-model="floorData.floorMainData.thicknessOuterWalls">
         <option value="100">100</option>
+        <option value="100">150</option>
+        <option value="100">200</option>
+        <option value="100">250</option>
       </select>
     </div>
     <div class="table">Длина внутренних стен (м) <input type="number" class="outBlock" placeholder="" v-model="floorData.floorMainData.lengthInnerWalls"></div>
