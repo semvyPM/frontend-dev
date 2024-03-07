@@ -4,7 +4,7 @@ import router from "@/components/router.js";
 
 
 const instance = axios.create({
-    baseURL: "http://kalck.ru",
+    baseURL: "http://kalck.ru/",
     // baseURL: "http://localhost:8080/",
     headers: {
         "Content-Type": "application/json"
