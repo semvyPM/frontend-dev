@@ -4,7 +4,7 @@ import router from "@/components/router.js";
 
 
 const instance = axios.create({
-    baseURL: "http://kalck.ru/",
+    baseURL: "http://kalck.ru",
     // baseURL: "http://localhost:8080/",
     headers: {
         "Content-Type": "application/json"
@@ -19,10 +19,10 @@ axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Reque
 // axios.defaults.baseURL = 'http://kalck.ru';
 axios.defaults.withCredentials = true; // Разрешить передачу учетных данных (cookies, авторизацию)
 //
-// axios.interceptors.request.use((config) => {
-//     config.headers['Access-Control-Allow-Origin'] = 'http://kalck.ru';
-//     return config;
-// });
+axios.interceptors.request.use((config) => {
+    config.headers['Access-Control-Allow-Origin'] = 'http://kalck.ru';
+    return config;
+});
 
 export const signIn = async (login, pass) => {
     console.log(login, pass);
