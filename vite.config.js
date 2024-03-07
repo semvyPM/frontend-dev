@@ -13,5 +13,12 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  server: {
+    publicPath:'/',
+    devServer: {
+      proxy: 'http://kalck.ru'
+    },
+    transpileDependencies: true
+  },
 })
