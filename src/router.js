@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import CarcasPage from '../components/CarcasPage.vue';
+import CarcasPage from './components/CarcasPage.vue';
 import SignInPage from "@/components/SignInPage.vue";
 import ClientPage from "@/components/ClientPage.vue";
 import ClientsPage from "@/components/ClientsPage.vue";

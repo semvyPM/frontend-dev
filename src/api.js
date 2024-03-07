@@ -1,17 +1,18 @@
 import axios from "axios";
 import store from "@/store/index.js";
-import router from "@/components/router.js";
+import router from "@/router.js";
 
 
 const instance = axios.create({
-    baseURL: "http://kalck.ru/",
+    baseURL: "http://kalck.ru",
     // baseURL: "http://localhost:8080/",
     headers: {
         "Content-Type": "application/json"
+        // 'Access-Control-Allow-Origin': '*'
     }
 });
 
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://kalck.ru';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE';
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = '*';
 axios.defaults.withCredentials = true;

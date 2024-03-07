@@ -25,7 +25,7 @@ import LogoSignIn from "@/components/icons/LogoSignIn.vue";
 
 <script>
 import axios from "axios";
-import router from "@/components/router.js";
+import router from "@/router.js";
 import {signIn} from "@/api.js";
 
 export default {
