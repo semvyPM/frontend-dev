@@ -9,13 +9,14 @@ const instance = axios.create({
     headers: {
         "Content-Type": "application/json",
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+        'Access-Control-Allow-Headers': '*'
     }
 });
 
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://kalck.ru';
-// axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8080';
-axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE';
-axios.defaults.headers.common['Access-Control-Allow-Headers'] = '*';
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://kalck.ru';
+// axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE';
+// axios.defaults.headers.common['Access-Control-Allow-Headers'] = '*';
 axios.defaults.withCredentials = true;
 
 
