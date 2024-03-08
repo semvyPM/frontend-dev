@@ -7,8 +7,8 @@ const instance = axios.create({
     baseURL: "http://kalck.ru",
     // baseURL: "http://localhost:8080",
     headers: {
-        "Content-Type": "application/json"
-        // 'Access-Control-Allow-Origin': '*'
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Origin': '*',
     }
 });
 
@@ -76,12 +76,14 @@ export const signOut = () => {
 }
 
 export const getClients = async () => {
+    console.log("get clients");
     const token = getToken();
     let response = await instance.get('/api/clients/by-user/' + store.state.user.id, {
         headers: {
             Authorization: `Bearer ${token}`
         },
     });
+    console.log(response.status);
     return checkStatus(response);
 }
 
