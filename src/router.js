@@ -1,11 +1,10 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import {createRouter, createWebHistory} from 'vue-router';
 import CarcasPage from './components/CarcasPage.vue';
 import SignInPage from "@/components/SignInPage.vue";
 import ClientPage from "@/components/ClientPage.vue";
 import ClientsPage from "@/components/ClientsPage.vue";
 import CalculationPage from "@/components/CalculationPage.vue";
 import FoundationPage from "@/components/FoundationPage.vue";
-import RoofPage from "@/components/RoofPage.vue";
 import store from "@/store/index.js";
 const routes = [
     { path: '/', name: 'signIn', component: SignInPage },
@@ -13,11 +12,12 @@ const routes = [
     { path: '/client/:id',  name: 'clientPage', component: ClientPage, props: true },
     { path: '/clients',  name: 'clientsPage', component: ClientsPage, props: true   },
     { path: '/calculation/:idcalculation/:idclient',  name: 'calculationPage', component: CalculationPage, props: true },
-    { path: '/foundation/:id&createMode=:createMode',  name: 'foundationPage', component: FoundationPage, props: true },
-    { path: '/roof/:id',  name: 'roofPage', component: RoofPage, props: true },
+    { path: '/foundation/:id&createMode=:createMode',  name: 'foundationPage', component: FoundationPage, props: true }
 ];
 const router = new createRouter({
-    history: createWebHashHistory(),
+    mode: history,
+    history: createWebHistory(),
+    base: "http://localhost:8080/",
     routes
 });
 router.beforeEach((to, from, next) => {

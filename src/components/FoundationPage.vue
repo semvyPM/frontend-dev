@@ -35,12 +35,10 @@ import Header from "@/components/Header.vue";
 
 <script>
 export default {
-  components: {
-    Floor
-  },
   props: {
     id: String,
-    createMode: String
+    createMode: String,
+    calculationData: {}
   },
   methods: {
     backToClient() {

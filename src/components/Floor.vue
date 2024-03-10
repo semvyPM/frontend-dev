@@ -5,7 +5,8 @@
 <template>
 <!--  Компонент этажа-->
   <div class="floor">
-    <div class="table">Высота этажа (м) <input type="number" class="outBlock"  placeholder="Не более 3 метров" v-model="floorData.floorMainData.heightFloor" max="3"> </div>
+    <div class="table">Высота этажа (м) <input type="number" required min="1" max="3" class="outBlock" placeholder="Не более 3 метров" v-model="floorData.floorMainData.heightFloor">
+    </div>
     <div class="table">Периметр внешних стен (м) <input type="number" class="outBlock" placeholder="" v-model="floorData.floorMainData.perimetrOuterWalls"></div>
     <div class="table">Площадь основания (м2) <input type="number" class="outBlock" placeholder="" v-model="floorData.floorMainData.baseArea"></div>
     <div class="table">
@@ -21,53 +22,61 @@
     <div class="table">
       <span>Толщина внутренних стен (мм)</span>
       <select v-model="floorData.floorMainData.thicknessInnerWalls">
-        <option value="100">100 мм</option>
-        <option value="100">150 мм</option>
-        <option value="100">200 мм</option>
-        <option value="100">250 мм</option>
+        <option value="1">100 мм</option>
+        <option value="2">150 мм</option>
+        <option value="3">200 мм</option>
+        <option value="4">250 мм</option>
       </select>
     </div>
+    <div>
+      <div class="plus" @click="openOuterWallsInputs">
+        <div class="circle">+</div>
+        <div class="plus_text">Добавить расчет обшивки внешних стен</div>
+      </div>
+      <div v-if="floorData.openOuterWallsShow">
+        <br>
+      <h3>Обшивки внешних стен</h3>
+      <div class="table">
+        <span>ОСБ</span>
+        <select v-model="floorData.dataOuterOverlap.OSB" @change="handleChangeSelect1">
+          <option value="1">ОСБ 9 мм</option>
+          <option value="2">ОСБ 10 мм</option>
+          <option value="3">ОСБ 15 мм</option>
+          <option value="4">ОСБ 18 мм</option>
+        </select>
+      </div>
+      <div class="table">
+        <span>Парогидроизоляция</span>
+        <select v-model="floorData.dataOuterOverlap.steamAndWaterproofing">
+          <option v-for="(option,index) in availableOptions" :value="index + 1">{{ option }}</option>
 
-
-
-    <h3>Обшивки внешних стен</h3>
-    <div class="table">
-      <span>ОСБ</span>
-      <select v-model="floorData.dataOuterOverlap.OSB">
-        <option value="9">ОСБ 9 мм</option>
-        <option value="10">ОСБ 10 мм</option>
-        <option value="15">ОСБ 15 мм</option>
-        <option value="18">ОСБ 18 мм</option>
-      </select>
-    </div>
-    <div class="table">
-      <span>Парогидроизоляция</span>
-      <select v-model="floorData.dataOuterOverlap.steamAndWaterproofing">
-        <option value="1">Ондутис</option>
-        <option value="2">Пароизоляция Axton (b)</option>
-        <option value="3">Пароизоляционная пленка Ютафол Н 96 Сильвер</option>
-        <option value="4">Пароизоляция В</option>
-      </select>
-    </div>
-    <div class="table">
-      <span>Ветрозащита</span>
-      <select v-model="floorData.dataOuterOverlap.windProtection">
-        <option value="1">Ветро-влагозащитная мембрана Brane A</option>
-        <option value="2">Паропроницаемая ветро-влагозащита A Optima</option>
-        <option value="3">Гидро-ветрозащита Тип А</option>
-      </select>
-    </div>
-    <div class="table">
-      <span>Утеплитель</span>
-      <select v-model="floorData.dataOuterOverlap.insulation">
-        <option value="1">Кнауф ТеплоКнауф 100 мм</option>
-        <option value="2">Технониколь 100 мм</option>
-        <option value="3">Эковер 100 мм</option>
-        <option value="4">Эковер 150 мм</option>
-        <option value="5">Эковер 200 мм</option>
-        <option value="6">Фасад 200 мм</option>
-        <option value="7">Эковер 250 мм</option>
-      </select>
+<!--          <option value="1">Ондутис</option>-->
+<!--          <option value="2">Пароизоляция Axton (b)</option>-->
+<!--          <option value="3">Пароизоляционная пленка Ютафол Н 96 Сильвер</option>-->
+<!--          <option value="4">Пароизоляция В</option>-->
+        </select>
+      </div>
+      <div class="table">
+        <span>Ветрозащита</span>
+        <select v-model="floorData.dataOuterOverlap.windProtection">
+          <option value="1">Ветро-влагозащитная мембрана Brane A</option>
+          <option value="2">Паропроницаемая ветро-влагозащита A Optima</option>
+          <option value="3">Гидро-ветрозащита Тип А</option>
+        </select>
+      </div>
+      <div class="table">
+        <span>Утеплитель</span>
+        <select v-model="floorData.dataOuterOverlap.insulation">
+          <option value="1">Кнауф ТеплоКнауф 100 мм</option>
+          <option value="2">Технониколь 100 мм</option>
+          <option value="3">Эковер 100 мм</option>
+          <option value="4">Эковер 150 мм</option>
+          <option value="5">Эковер 200 мм</option>
+          <option value="6">Фасад 200 мм</option>
+          <option value="7">Эковер 250 мм</option>
+        </select>
+      </div>
+      </div>
     </div>
     <br>
     <div>
@@ -199,34 +208,37 @@
 </template>
 
 <script>
+
 export default {
   props: ['currentFloor'],
   data() {
     return {
+      selectedOption: null,
+      availableOptions: ['A', 'B', 'C'],
       floorData: {
         showTable: false,
         overlapInputsShow: false,
         windowsTableShow: false,
+        openOuterWallsShow: false,
         currentFloor: this.currentFloor,
-        floorMainData: [{heightFloor: 0, perimetrOuterWalls: 0, baseArea: 0, thicknessOuterWalls: 0, lengthInnerWalls: 0, thicknessInnerWalls: 0}],
-        itemsWindow: [{ heightWindow: '', widthWindow: '', quantityWindow: '' }],
-        itemsDoorsOut: [{ heightDoorsOut: '', widthDoorsOut: '', quantityDoorsOut: '' }],
-        itemsDoorsInner: [{ heightDoorsInner: '', widthDoorsInner: '', quantityDoorsInner: '' }],
-        osbInnerOvarlap: "",
-        dataOuterOverlap: [{OSB: '', steamAndWaterproofing: '', windProtection: '', insulation: ''}]
-      },
-      maxHeightFloor: 3
+        floorMainData: {heightFloor: null, perimetrOuterWalls: null, baseArea: null, thicknessOuterWalls: null, lengthInnerWalls: null, thicknessInnerWalls: null},
+        dataOuterOverlap: {OSB: null, steamAndWaterproofing: null, windProtection: null, insulation: null},
+        osbInnerOvarlap: null,
+        itemsWindow: [{ heightWindow: null, widthWindow: null, quantityWindow: null }],
+        itemsDoorsOut: [{ heightDoorsOut: null, widthDoorsOut: null, quantityDoorsOut: null }],
+        itemsDoorsInner: [{ heightDoorsInner: null, widthDoorsInner: null, quantityDoorsInner: null }]
+      }
     };
   },
   methods: {
     duplicateBlockWindow() {
-      this.floorData.itemsWindow.push({ heightWindow: '', widthWindow: '', quantityWindow: '' });
+      this.floorData.itemsWindow.push({ heightWindow: null, widthWindow: null, quantityWindow: null });
     },
     duplicateBlockDoorsOut() {
-      this.floorData.itemsDoorsOut.push({ heightDoorsOut: '', widthDoorsOut: '', quantityDoorsOut: '' });
+      this.floorData.itemsDoorsOut.push({ heightDoorsOut: null, widthDoorsOut: null, quantityDoorsOut: null });
     },
     duplicateBlockDoorsInner() {
-      this.floorData.itemsDoorsInner.push({ heightDoorsInner: '', widthDoorsInner: '', quantityDoorsInner: '' });
+      this.floorData.itemsDoorsInner.push({ heightDoorsInner: null, widthDoorsInner: null, quantityDoorsInner: null });
     },
     openWallsInputs() {
       this.floorData.showTable = !this.floorData.showTable;
@@ -237,13 +249,31 @@ export default {
     },
     openWindowInputs() {
       this.floorData.windowsTableShow = !this.floorData.windowsTableShow;
+    },
+    openOuterWallsInputs() {
+      this.floorData.openOuterWallsShow = !this.floorData.openOuterWallsShow;
+    },
+    getFloorData() {
+      console.log("check " + JSON.stringify(this.floorData));
+      return this.floorData;
+    },
+    handleChangeSelect1() {
+      if (this.floorData.dataOuterOverlap.OSB === '1') {
+        this.availableOptions = ['A', 'B', 'C'];
+      } else if (this.floorData.dataOuterOverlap.OSB === '2') {
+        this.availableOptions = ['X', 'Y', 'Z'];
+      }
+      console.log(this.floorData.dataOuterOverlap.OSB)
     }
+
   }
 };
 </script>
 
 <style scoped>
+
 @import '../assets/style/carcas_page_style/style.css';
 @import '../assets/style/carcas_page_style/slide.css';
 @import '../assets/style/carcas_page_style/responsive.css';
+
 </style>

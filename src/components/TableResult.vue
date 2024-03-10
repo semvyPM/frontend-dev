@@ -48,10 +48,13 @@ export default {
   },
   methods: {
     getRub(number) {
-      return number.toLocaleString('ru-RU', {
-        style: 'currency',
-        currency: 'RUB'
-      });
+      if (number !== undefined) {
+        return number.toLocaleString('ru-RU', {
+          style: 'currency',
+          currency: 'RUB'
+        });
+      }
+      else return 0;
     }
   }
 }

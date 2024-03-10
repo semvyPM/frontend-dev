@@ -16,7 +16,7 @@ import Header from "@/components/Header.vue";
   </div>
 </div>
 <main>
-  <form action="post" @submit.prevent="saveCalculation">
+  <form @submit.prevent="saveCalculation">
     <div class="adress">
       <input type="text" placeholder="Введите адрес объекта строительства" v-model="addres" :readonly="isReadOnly">
       <input type="button" value="Сохранить" @click="saveAddress" v-if="!isReadOnly">
@@ -26,9 +26,9 @@ import Header from "@/components/Header.vue";
     <div class="table floorsInput">Количество этажей <input type="number" placeholder="Введите число этажей" v-model="floorsCount" @change="duplicateFloors"> </div>
     <div v-for="(currentFloor, index) in floors" :key="index">
       <h3>Этаж: {{ index + 1 }}</h3>
-      <Floor :currentFloor="index"></Floor>
+      <Floor ref="allFloors" :currentFloor="index" />
     </div>
-    <input type="submit" value="Рассчитать"  @click="saveCalculation">
+    <input type="submit" value="Рассчитать">
   </form>
 </main>
 </template>
@@ -51,18 +51,13 @@ export default {
       floorsCount: 1, // Начальное количество этажей
       floors: [{}], // Массив с данными для каждого этажа, начинаем с одного пустого объекта
       isReadOnly: false,
+      floor: {},
       addres: "",
       calculation: {customerId: {id: parseInt(this.id) }, addressObjectConstractions: "", number: this.numbers, createdDate: new Date(), calculationStateId: {id: 1}}
     };
   },
   mounted() {
-    if (this.createMode === "true") {
-      this.isReadOnly = false
-    }
-    else {
-      // добавить инфо об адресе
-      this.isReadOnly = true
-    }
+    this.isReadOnly = this.createMode !== "true";
     console.log("carcas " + this.createMode);
   },
   methods: {
@@ -98,6 +93,12 @@ export default {
       }
     },
     saveCalculation() {
+      this.$refs.allFloors.forEach(floor => {
+        this.floors[floor.floorData.currentFloor] = floor.getFloorData();
+      });
+
+
+
       // if (this.addres === "") {
       //   console.log("нет")
       // }
@@ -112,9 +113,10 @@ export default {
       //       });
       //   console.log(this.calculation);
       // }
-      console.log("FLOORS")
-      for (const fl in this.floors) {
-        console.log(fl);
+      console.log("FLOORS");
+      console.log(this.floors);
+      for (const floor in this.floors) {
+        console.log(floor.currentFloor);
       }
     }
   }

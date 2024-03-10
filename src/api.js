@@ -4,8 +4,8 @@ import router from "@/router.js";
 
 
 const instance = axios.create({
-    baseURL: "http://kalck.ru/",
-    // baseURL: "http://localhost:8080/",
+    // baseURL: "http://kalck.ru/",
+    baseURL: "http://localhost:8080/",
     headers: {
         "Content-Type": "application/json"
         // 'Access-Control-Allow-Origin': '*',
@@ -14,8 +14,8 @@ const instance = axios.create({
     }
 });
 
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://kalck.ru/';
-// axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8080/';
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://kalck.ru/';
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8080/';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE';
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = '*';
 axios.defaults.withCredentials = true;
@@ -78,14 +78,13 @@ export const signOut = () => {
 }
 
 export const getClients = async () => {
-    console.log("get clients");
     const token = getToken();
     let response = await instance.get('/api/clients/by-user/' + store.state.user.id, {
         headers: {
             Authorization: `Bearer ${token}`
         },
     });
-    console.log(response.status);
+    console.log("gc status " + response.status);
     return checkStatus(response);
 }
 
@@ -162,6 +161,16 @@ export const createCalculation = async (calculation) => {
 export const getFloors = async (idcalculation) => {
     const token = getToken();
     let response = await instance.get('/api/calculations/floors/' + idcalculation, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    });
+    return checkStatus(response);
+}
+
+export const getBasement = async (idcalculation) => {
+    const token = getToken();
+    let response = await instance.get('/api/calculations/basements/' + idcalculation, {
         headers: {
             Authorization: `Bearer ${token}`
         },

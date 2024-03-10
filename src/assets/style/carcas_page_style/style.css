@@ -395,9 +395,14 @@ input[type='submit']{
 }
 .element img{
     width: 70%;
-    height: 70%;
+    /*height: 70%;*/
     margin-left: 10px;
     margin-top: 8px;
+    margin-bottom: 8px;
+}
+#heightError {
+    padding-top: 15px;
+    color: red;
 }
 .element h3{
     margin: 0;
