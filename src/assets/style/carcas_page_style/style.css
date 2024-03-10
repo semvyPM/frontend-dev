@@ -530,6 +530,7 @@ input[type='submit']{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 .calc-info-block .info-adress {
     flex-direction: row;
@@ -544,10 +545,11 @@ input[type='submit']{
     display: flex;
     flex-direction: row-reverse;
     width: 100%;
+    flex-wrap: wrap;
 }
 
 .copy-button, .delete-button, .view-button {
-    width: 100px;
+    width: 90px;
     margin-top: 10px;
     margin-left: 10px;
     padding: 5px 5px;
