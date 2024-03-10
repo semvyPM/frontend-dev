@@ -25,7 +25,8 @@ import LogoSignIn from "@/components/icons/LogoSignIn.vue";
 
 <script>
 import axios from "axios";
-import router from "@/components/router.js";
+import router from "@/router.js";
+import {signIn} from "@/api.js";
 
 export default {
   data() {
@@ -40,24 +41,18 @@ export default {
       window.history.go(-1);
     },
     async login(){
-      try {
-        const response = await axios.post("http://localhost:8080/api/users/authuser", {
-          userlogin: this.userlogin,
-          userpassword: this.userpassword
-        });
-
-        if (response.data) {
-          this.$router.push({name: "clientsPage"});
-        } else {
-          alert(response.data.message);
-        }
-      } catch (error) {
-        this.error = error.response.data.message;
-        console.log(error)
-      }
+      const auth = {
+        username: this.userlogin,
+        password: this.userpassword
+      };
+      signIn(this.userlogin, this.userpassword);
     },
   },
   mounted() {
+    // this.$store.dispatch('loadToken');
+    // this.$store.dispatch('loadUser');
+    // this.$store.commit('clearUser');
+    // this.$store.commit('clearToken');
   }
 };
 </script>

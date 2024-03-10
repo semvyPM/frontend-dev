@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "axios": "^1.6.7",
+    "axios-auth-refresh": "^3.3.6",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "vue": "^3.4.15",
+    "vue-i18n": "^9.10.1",
     "vue-router": "^4.2.5",
     "vuex": "^4.1.0"
   },
