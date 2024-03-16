@@ -17,7 +17,31 @@
 
       <div class="card-container">
         <div v-for="client in clients" :key="client.id">
-          <div class="card" v-if="client" @click="goToClient(client.id)">{{ client.lastName }} {{ client.firstName }} {{ client.secondName }}</div>
+          <div class="client-card">
+            <div class="client-card-header">{{ client.firstName }} {{ client.lastName }} {{ client.secondName }}</div>
+            <div class="client-card-info">
+              <div class="client-info">
+                <div class="info-card">
+                  <div class="info-title">Адрес</div>
+                  <div class="info-text">{{ client.adress }}</div>
+                </div>
+              </div>
+              <div class="client-info">
+                <div class="info-card">
+                  <div class="info-title">Телефон</div>
+                  <div class="info-text">{{ client.phone }}</div>
+                </div>
+                <div class="info-card">
+                  <div class="info-title">E-mail</div>
+                  <div class="info-text">{{ client.email }}</div>
+                </div>
+              </div>
+
+            </div>
+            <div class="client-card-footer">
+              <div class="view-button"  @click="goToClient(client.id)">Просмотр</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -45,6 +69,7 @@ export default {
     getClients()
         .then(data => {
           this.clients = data;
+          console.log(this.clients);
         })
         .catch(error => {
           console.error("Произошла ошибка: ", error);

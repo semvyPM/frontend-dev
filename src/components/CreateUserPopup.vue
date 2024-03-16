@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import {createCustomer} from "@/api.js";
 
 export default {

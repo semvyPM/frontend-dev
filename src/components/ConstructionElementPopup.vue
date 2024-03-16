@@ -4,15 +4,15 @@
       <span class="close" @click="closeModal">&times;</span>
       <h2>Выбор конструктивного элемента</h2>
       <div class="popup-elements">
-        <div @click="redirectToCarcasPage" style="cursor: pointer;" class="element">
+        <div @click="redirectToCarcasPage" class="element">
           <img src="@/assets/img/house.png" alt="">
           <h3>Каркас</h3>
         </div>
-        <div @click="redirectToFoundationPage" style="cursor: pointer;" class="element">
+        <div @click="redirectToFoundationPage" class="element">
           <img src="@/assets/img/foundation.png" alt="">
           <h3>Фундамент</h3>
         </div>
-        <div style="cursor: pointer;" class="element">
+        <div class="element">
           <img src="@/assets/img/roof.png" alt="">
           <h3>Крыша</h3>
         </div>
@@ -37,16 +37,23 @@ export default {
     },
     redirectToCarcasPage() {
       // Используем маршрутизатор для перенаправления
-      this.$router.push({ name: 'carcasPage', params: { id: this.id, createMode: this.createMode, numbers: this.numbers }});
+      this.$router.push({
+        name: 'carcasPage', params: {
+            id: this.idclient,
+            createMode: this.createMode,
+            numbers: this.numbers
+          }
+        });
     },
     redirectToFoundationPage() {
       // Используем маршрутизатор для перенаправления
-      this.$router.push({ name: 'foundationPage', params: { id: this.id, createMode: this.createMode }});
-    },
-    // redirectToRoofPage() {
-    //   // Используем маршрутизатор для перенаправления
-    //   this.$router.push({ name: 'roofPage', props: { id: this.id }});
-    // },
+      this.$router.push({
+        name: 'foundationPage', params: {
+          id: this.idclient,
+          createMode: this.createMode
+        }
+      });
+    }
   }
 }
 

@@ -11,7 +11,6 @@
     .client_data{
         margin-top: 10px;
         font-size: 1em;
-        font-family: Roboto-Medium;
         padding: 0;
         text-align: center;
     }
@@ -24,7 +23,6 @@
         text-align: center;
         grid-template-columns: 23% 50%;
         font-size: 2em;
-        font-family: Roboto-Medium;
     }
 
     .carcass{
@@ -86,11 +84,8 @@
 
     /* Для страницы Отчет */
     .result-buttons{
-
         display: flex;
         flex-direction: column-reverse;
-        font-family: Roboto-Regular;
-
     }
 
     /* ____________________________________ */
@@ -134,7 +129,6 @@
     /* Контейнеры */
     .container {
         text-align: center;
-        font-family: Roboto-Medium;
     }
 
     hr {
@@ -166,16 +160,75 @@
     /* Страница клиента */
     /* Кнопка "Создать расчет" */
     .create-calculation-button input{
-        width: 100%;
+        width: 95%;
     }
 
     .calculation-data {
         width: 100%;
     }
 
+    .materials-block {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .materials-block tbody {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .materials-block tr {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    .materials-block .info-td {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+
+    .materials-block thead {
+        display: none;
+    }
+
+    .materials-block .info-td {
+        display: flex;
+        justify-content: right;
+        margin-right: 0;
+    }
+
+    .materials-block .info-td td {
+        margin-right: 3px;
+        margin-left: 3px;
+    }
+
+    .materials-block .operation {
+        display: block;
+        border: 0;
+        text-align: center;
+    }
+
+    .materials-block .sub-text {
+        border: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        margin-right: 10px;
+    }
+
+    .materials-block th, td {
+        border: none;
+        position: relative;
+        white-space: normal;
+    }
+    .materials-block .sub-text {
+        border: 0;
+    }
 }
 @media (min-width: 768px) {
-
     .header{
         padding: 10px;
         display: grid;
@@ -186,7 +239,6 @@
         display: grid;
         grid-template-columns: 10% 80% 10%;
         font-size: 2em;
-        font-family: Roboto-Medium;
     }
     .nav p{
         text-align: center;
@@ -210,6 +262,9 @@
     .card-container {
         display: flex;
         flex-wrap: wrap;
+    }
+    .client-card {
+        min-width: 400px;
     }
     .container {
         display: flex;
@@ -267,7 +322,6 @@
 
     body {
         min-height: 1693px;
-        font-family: Roboto-Regular;
     }
     select {
         width: 300px;
@@ -304,7 +358,6 @@
         display: grid;
         grid-template-columns: 10% 80% 10%;
         font-size: 2em;
-        font-family: Roboto-Medium;
     }
     .nav p{
         text-align: center;
@@ -312,7 +365,6 @@
     .client_data{
         font-size: 1em;
         padding-left: 50px;
-        font-family: Roboto-Medium;
     }
     .employee{
         font-size: 1em;
@@ -404,7 +456,7 @@
 
     .element{
         display: grid;
-        grid-template-columns: 20% 60% 20%;
+        grid-template-columns: 17% 70% 15%;
         width: 50%;
         height: 100%;
         color: #2a622a;
@@ -412,12 +464,6 @@
         box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
         margin-bottom: 20px;
         text-align: center;
-    }
-    .element img{
-        width: 70%;
-        height: 70%;
-        margin-left: 10px;
-        margin-top: 8px;
     }
     .element h3{
         margin: 0;
@@ -443,19 +489,6 @@
 
     .calculation-data {
         width: 45%;
-    }
-
-    @font-face {
-        font-family: Roboto-Regular;
-        src: url("@/assets/fonts/Roboto/Roboto-Regular.ttf");
-    }
-    @font-face {
-        font-family: Roboto-Bold;
-        src: url("@/assets/fonts/Roboto/Roboto-Bold.ttf");
-    }
-    @font-face {
-        font-family: Roboto-Medium;
-        src: url("@/assets/fonts/Roboto/Roboto-Medium.ttf");
     }
 }
 @media only screen and (max-width: 600px) {

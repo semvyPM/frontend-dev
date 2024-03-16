@@ -12,21 +12,21 @@ import ClientInfoPopup from "@/components/ClientInfoPopup.vue";
     <div class="client_data">
       <div v-if="clientData" @click="openClientInfoPopup">
         <ClientInfoPopup v-if="showPopup" @close="showPopup = false" :clientObject="clientObject"/>
-        <p  style="font-family: Roboto-Medium">Клиент<br></p>
+        <p><b>Клиент</b><br></p>
         <p>
-          <span style="font-family: Roboto-Bold">{{ clientObject.lastName }} {{ clientObject.firstName }} {{ clientObject.secondName }}</span> <br>
+          <span>{{ clientObject.lastName }} {{ clientObject.firstName }} {{ clientObject.secondName }}</span> <br>
           <span>{{ clientObject.adress }}</span> <br>
           <span>тел. {{ clientObject.phone }}, {{ clientObject.eMail }}</span>
         </p>
       </div>
     </div>
     <div class="employee">
-      <p  style="font-family: Roboto-Medium">
-        Сотрудник<br>
+      <p>
+        <b>Сотрудник</b><br>
       </p>
       <p>
-        <span  style="font-family: Roboto-Bold">{{ user.lastname }} {{ user.firstname }} {{ user.secondname }} </span><br>
-        <span> {{ user.states }} </span>
+        <span>{{ user.lastname }} {{ user.firstname }} {{ user.secondname }} </span><br>
+        <span v-if="user.states" v-for="state in user.states" :key="user.states.id"> {{ state }} <br> </span>
       </p>
     </div>
     <div class="exit"></div>
@@ -82,6 +82,6 @@ export default {
 @import '@/assets/style/carcas_page_style/style.css';
 @import '@/assets/style/carcas_page_style/slide.css';
 @import '@/assets/style/carcas_page_style/responsive.css';
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
 </style>

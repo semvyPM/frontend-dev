@@ -3,7 +3,6 @@
 </script>
 
 <template>
-  <h3>Результаты расчета {{ floor.floorData.floorNumber }} этажа</h3>
   <table class="results-in-table">
     <thead><tr><th class="header1">Материал</th><th class="header2">Наименование</th><th class="header3">Единица измерения</th><th class="header4">Количество</th><th class="header5">Стоимость</th><th class="header6">Сумма</th></tr></thead>
     <thead><tr><th colspan="5">Внешние стены</th><td class="result-sum-2">{{ getRub(floor.resultForInnerWallsSum) }}</td></tr></thead>
@@ -48,10 +47,13 @@ export default {
   },
   methods: {
     getRub(number) {
-      return number.toLocaleString('ru-RU', {
-        style: 'currency',
-        currency: 'RUB'
-      });
+      if (number !== undefined) {
+        return number.toLocaleString('ru-RU', {
+          style: 'currency',
+          currency: 'RUB'
+        });
+      }
+      else return 0;
     }
   }
 }
