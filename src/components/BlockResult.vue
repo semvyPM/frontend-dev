@@ -3,7 +3,6 @@
 </script>
 
 <template>
-  <h3>Результаты расчета {{ floor.floorData.floorNumber }} этажа</h3>
   <div class="results-in-cards">
     <div class="results-in-card result-data-by-floor-type-1">
       <div class="result-header">
@@ -109,10 +108,13 @@ export default {
   },
   methods: {
     getRub(number) {
-      return number.toLocaleString('ru-RU', {
-        style: 'currency',
-        currency: 'RUB'
-      });
+      if (number !== undefined) {
+        return number.toLocaleString('ru-RU', {
+          style: 'currency',
+          currency: 'RUB'
+        });
+      }
+      else return 0;
     }
   }
 }

@@ -26,15 +26,46 @@ import Header from "@/components/Header.vue";
     <div class="table floorsInput">Количество этажей <input type="number" placeholder="Введите число этажей" v-model="floorsCount" @change="duplicateFloors"> </div>
     <div v-for="(currentFloor, index) in floors" :key="index">
       <h3>Этаж: {{ index + 1 }}</h3>
-      <Floor ref="allFloors" :currentFloor="index" />
+      <Floor ref="allFloors" :currentFloor="index"
+                             :availableOptionsWindProtection="availableOptionsWindProtection"
+                             :availableOptionsProofing="availableOptionsProofing"
+                             :availableOptionsOsb="availableOptionsOsb"
+                             :availableOptionsAll1="availableOptionsAll1"
+                             :availableOptionsAll2="availableOptionsAll2"
+      />
     </div>
+    <h3>Сводный результат по материалам</h3>
+    <input type="button" style="width: 200px; margin-left: 7px" value="Обновить материалы" @click="updateMaterials">
+    <table class="materials-block">
+      <thead>
+        <tr>
+          <th>Материал (ед)</th><th>Наименование</th><th>Сумма</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in resultFloorsMaterial" :key="index">
+          <td class="sub-title">{{ index }}</td>
+          <td>Доска 50*200*3000 Доска 50*200*3000 Доска 50*</td>
+          <td class="sub-text">
+            {{getRub(getPriceInfo(index))}}
+            <span class="sub-text operation">x</span>
+            30
+            <span class="sub-text operation">=</span>
+            {{getRub(55500)}}
+          </td>
+        </tr>
+      </tbody>
+      <tr>
+        <th>Итоговая сумма</th><td colspan="4" class="sub-title">{{getRub(736483)}}</td>
+      </tr>
+    </table>
     <input type="submit" value="Рассчитать">
   </form>
 </main>
 </template>
 
 <script>
-import {getClient, createCalculation} from "@/api.js";
+import {getPrice} from "@/api.js";
 
 export default {
   components: {
@@ -53,14 +84,33 @@ export default {
       isReadOnly: false,
       floor: {},
       addres: "",
-      calculation: {customerId: {id: parseInt(this.id) }, addressObjectConstractions: "", number: this.numbers, createdDate: new Date(), calculationStateId: {id: 1}}
+      availableOptionsAll1: [{id: 15, nameOption: 'Кнауф ТеплоКнауф 100 мм'}, {id: 16, nameOption: 'Технониколь 100 мм'}, {id: 18, nameOption: 'Эковер 100 мм'}, {id: 19, nameOption: 'Эковер 150 мм'}, {id: 20, nameOption: 'Эковер 200 мм'}, {id: 17, nameOption: 'Фасад 200 мм'}, {id: 21, nameOption: 'Эковер 250 мм'}],
+      availableOptionsAll2: [{id: 20, nameOption: 'Эковер 200 мм'}, {id: 17, nameOption: 'Фасад 200 мм'}, {id: 21, nameOption: 'Эковер 250 мм'}],
+      availableOptionsOsb: [{id: 11, nameOption: 'ОСБ 9 мм'}, {id: 12, nameOption: 'ОСБ 10 мм'}, {id: 13, nameOption: 'ОСБ 15 мм'}, {id: 14, nameOption: 'ОСБ 18 мм'}],
+      availableOptionsWindProtection: [{id: 26, nameOption: 'Ветро-влагозащитная мембрана Brane A'}, {id: 27, nameOption: 'Паропроницаемая ветро-влагозащита A Optima'}, {id: 28, nameOption: 'Гидро-ветрозащита Тип А'}],
+      availableOptionsProofing: [{id: 22, nameOption: 'Ондутис'}, {id: 23, nameOption: 'Пароизоляция Axton (b)'}, {id: 24, nameOption: 'Пароизоляционная пленка Ютафол Н 96 Сильвер'}, {id: 25, nameOption: 'Пароизоляция В'}],
+      resultFloor: [{}],
+      resultFloorsMaterial: {},
+      calculation: {customerId: {id: parseInt(this.id) }, addressObjectConstractions: "", number: this.numbers, createdDate: new Date(), calculationStateId: {id: 1}},
+      pricelist: {}
     };
   },
   mounted() {
     this.isReadOnly = this.createMode !== "true";
     console.log("carcas " + this.createMode);
+    getPrice()
+        .then(data => {
+          this.pricelist = data;
+        })
+        .catch(error => {
+          console.error("Произошла ошибка: ", error);
+        });
   },
   methods: {
+    getPriceInfo(id) {
+      console.log(id + " = " + this.pricelist.find(material => String(material.materialCharacteristicsId.id) === 1));
+      return this.pricelist.find(material => String(material.materialCharacteristicsId.id) === id);
+    },
     duplicateFloors() {
       // Обновляем количество этажей в соответствии с введенным числом
       const newCount = Number(this.floorsCount);
@@ -92,13 +142,32 @@ export default {
         console.log(this.calculation);
       }
     },
-    saveCalculation() {
+    updateMaterials() {
+      this.resultFloor = [];
+      this.resultFloorsMaterial = {};
       this.$refs.allFloors.forEach(floor => {
-        this.floors[floor.floorData.currentFloor] = floor.getFloorData();
+        this.resultFloor[floor.floorData.currentFloor] = floor.getFloorData();
+        for (const floorElement of this.resultFloor[floor.floorData.currentFloor].result) {
+          if ( this.resultFloorsMaterial[String(floorElement.id)]) {
+            this.resultFloorsMaterial[String(floorElement.id)] += parseFloat(floorElement.count);
+          }
+          else {
+            this.resultFloorsMaterial[String(floorElement.id)] = parseFloat(floorElement.count);
+          }
+        }
+        console.log(this.resultFloorsMaterial);
       });
-
-
-
+    },
+    getRub(number) {
+      if (number !== undefined) {
+        return number.toLocaleString('ru-RU', {
+          style: 'currency',
+          currency: 'RUB'
+        });
+      }
+      else return 0;
+    },
+    saveCalculation() {
       // if (this.addres === "") {
       //   console.log("нет")
       // }
@@ -113,12 +182,9 @@ export default {
       //       });
       //   console.log(this.calculation);
       // }
-      console.log("FLOORS");
-      console.log(this.floors);
-      for (const floor in this.floors) {
-        console.log(floor.currentFloor);
-      }
-    }
+
+    },
+
   }
 }
 </script>
@@ -127,6 +193,6 @@ export default {
 @import '@/assets/style/carcas_page_style/style.css';
 @import '@/assets/style/carcas_page_style/slide.css';
 @import '@/assets/style/carcas_page_style/responsive.css';
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i);
 </style>

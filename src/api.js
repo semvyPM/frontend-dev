@@ -38,29 +38,30 @@ export const signIn = async (login, pass) => {
     }
 }
 
-export const getUser = async () => {
-    const token = getToken();
-    const response = await instance.get('/api/users/get', {
-        headers: {
-            Authorization: `Bearer ${token}`
-        },
-    });
-
-    return checkStatus(response);
-}
 
 const checkStatus = (response) => {
     if (response.status === 403) {
-        console.log("токен истек");
-        signOut();
-    }
-    else if (response.status === 200) {
-        return response.data;
+        console.log("token");
+        // signOut();
     }
     else {
         console.log("Ошибка выполнения запроса!");
         return null;
     }
+}
+
+export const getUser = async () => {
+    const token = getToken();
+    return await instance.get('/api/users/get', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
+    });
 }
 
 const getToken = () => {
@@ -76,111 +77,141 @@ export const signOut = () => {
 
 export const getClients = async () => {
     const token = getToken();
-    let response = await instance.get('/api/clients/by-user/' + store.state.user.id, {
+    return await instance.get('/api/clients/by-user/' + store.state.user.id, {
         headers: {
             Authorization: `Bearer ${token}`
         },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
     });
-    console.log("gc status " + response.status);
-    return checkStatus(response);
+
 }
 
 export const getClient = async (id) => {
     const token = getToken();
-    let response = await instance.get('/api/clients/' + id, {
+    return await instance.get('/api/clients/' + id, {
         headers: {
             Authorization: `Bearer ${token}`
         },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
     });
-    return checkStatus(response);
 }
 
 export const getCalculations = async (id) => {
     const token = getToken();
-    let response = await instance.get('/api/calculations/by-customer/' + id, {
+    return  await instance.get('/api/calculations/by-customer/' + id, {
     headers: {
         Authorization: `Bearer ${token}`
     },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
     });
-    return checkStatus(response);
 }
 
 export const getCalculation = async (idcalculation) => {
     const token = getToken();
-    let response = await instance.get('/api/calculations/' + idcalculation, {
+    return  await instance.get('/api/calculations/' + idcalculation, {
         headers: {
             Authorization: `Bearer ${token}`
         },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
     });
-    return checkStatus(response);
 }
 
 export const createCustomer = async (customer) => {
     const token = getToken();
-    const response = await instance.post("/api/clients/create", customer, {
+    return await instance.post("/api/clients/create", customer, {
         headers: {
             Authorization: `Bearer ${token}`
         },
+    }).then(response => {
+        router.push({path: "/client/" + response.data.id});
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
     });
-    if (response.status === 403) {
-        signOut();
-    }
-    else {
-        if (response.data) {
-            router.push({path: "/client/" + response.data.id});
-        } else {
-            console.log(response.data.message);
-            return null;
-        }
-    }
+
 }
 
 export const createCalculation = async (calculation) => {
     const token = getToken();
-    const response = await instance.post("/api/calculations/create", calculation, {
+    return await instance.post("/api/calculations/create", calculation, {
         headers: {
             Authorization: `Bearer ${token}`
         },
+    }).then(response => {
+        console.log(response.data);
+        return response.data.id;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
     });
-    if (response.status === 403) {
-        signOut();
-    }
-    else {
-        if (response.data) {
-            return response.data.id;
-        } else {
-            console.log(response.data.message);
-            return null;
-        }
-    }
 }
 
 export const getFloors = async (idcalculation) => {
     const token = getToken();
-    let response = await instance.get('/api/calculations/floors/' + idcalculation, {
+    return  await instance.get('/api/calculations/floors/' + idcalculation, {
         headers: {
             Authorization: `Bearer ${token}`
         },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
     });
-    return checkStatus(response);
 }
 
 export const getBasement = async (idcalculation) => {
     const token = getToken();
-    let response = await instance.get('/api/calculations/basements/' + idcalculation, {
+    return  await instance.get('/api/calculations/basements/' + idcalculation, {
         headers: {
             Authorization: `Bearer ${token}`
         },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
     });
-    return checkStatus(response);
 }
 
 export const getBasementData = async (idcalculation) => {
     const token = getToken();
-    let response = await instance.get('/api/calculations/basements/' + idcalculation, {
+    return  await instance.get('/api/calculations/basements/' + idcalculation, {
         headers: {
             Authorization: `Bearer ${token}`
         },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
     });
-    return checkStatus(response);
+}
+
+export const getPrice = async () => {
+    const token = getToken();
+    return  await instance.get('/api/priceLists/all', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
+    });
 }

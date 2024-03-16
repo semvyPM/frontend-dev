@@ -18,6 +18,7 @@
         <input type="button" value="Добавить конструктивный элемент" @click="togglePopup">
         <ConstructionElementPopup v-if="showPopup" :idclient="idclient" :createMode="createMode" @close="showPopup = false"/>
       </div>
+      <div v-if="showFloor">
       <div class="result-buttons-add">
         <label for="hd-3">
           <div class="plus" @click="frameInfo=!frameInfo">
@@ -28,13 +29,14 @@
       </div>
       <div class="report" v-if="frameInfo">
         <div>
-          <keep-alive>
-            <component v-for="floor in floors" :key="floor.id" :is="currentComponent" :floor="floor"></component>
-          </keep-alive>
+            <div v-for="floor in floors" :key="floor.id" >
+              <h3>Результаты расчета {{ floor.floorData.floorNumber }} этажа</h3>
+              <keep-alive><component :is="currentComponent" :floor="floor"></component></keep-alive>
+            </div>
         </div>
-
-
       </div>
+      </div>
+      <div v-if="showBasement">
       <div class="result-buttons-add">
         <label for="hd-3">
           <div class="plus" @click="basementInfo=!basementInfo">
@@ -45,17 +47,17 @@
       </div>
       <div class="report" v-if="basementInfo">
         <div>
-          <keep-alive>
-            <component v-for="floor in floors" :key="floor.id" :is="currentComponent" :floor="floor"></component>
-          </keep-alive>
+          <div v-for="basement in basements" :key="basement.id" >
+            <p>{{basement.id}}</p>
+          </div>
         </div>
 
       </div>
-
+      </div>
       <div class="result-buttons-add">
         <label for="hd-3">
           <div class="plus">
-            <div class="circle">+</div>
+            <div class="circle" style="border: 2px solid lightgray; background-color: lightgray">+</div>
             <div class="plus_text">Результат расчета крыши</div>
           </div>
         </label>
@@ -70,7 +72,7 @@ import Header from "@/components/Header.vue";
 import BlockResult from "@/components/BlockResult.vue";
 import TableResult from "@/components/TableResult.vue";
 import axios from "axios";
-import { getCalculation, getFloors, getBasementData } from "@/api.js";
+import {getCalculation, getFloors, getBasementData, getBasement} from "@/api.js";
 import { saveAs } from 'file-saver';
 import * as ExcelJS from "exceljs";
 
@@ -85,12 +87,14 @@ export default {
       clientData: true,
       calculation: {},
       floors: {},
-      basement: {},
+      basements: {},
       createMode: "false",
       showPopup: false,
       currentComponent: window.innerWidth < 768 ? 'BlockResult' : 'TableResult', floorsData: this.floors,
       basementInfo: false,
-      frameInfo: false
+      frameInfo: false,
+      showFloor: false,
+      showBasement: false
     }
   },
   async mounted() {
@@ -105,11 +109,24 @@ export default {
     getFloors(this.idcalculation)
         .then(data => {
           this.floors = data;
+          if (this.floors.length > 0) { this.showFloor = true; }
           console.log(this.floors);
         })
         .catch(error => {
           console.error("Произошла ошибка: ", error);
         });
+    getBasement(this.idcalculation)
+        .then(data => {
+          this.basements = data;
+          if (this.basements.length > 0) { this.showBasement = true; }
+        })
+        .catch(error => {
+          console.error("Произошла ошибка: ", error);
+        });
+    console.log(this.floors.length);
+
+
+
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize);
