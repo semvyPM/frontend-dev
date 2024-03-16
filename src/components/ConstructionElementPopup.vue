@@ -12,7 +12,7 @@
           <img src="@/assets/img/foundation.png" alt="">
           <h3>Фундамент</h3>
         </div>
-        <div class="element">
+        <div class="element" style="background-color: lightgray">
           <img src="@/assets/img/roof.png" alt="">
           <h3>Крыша</h3>
         </div>
