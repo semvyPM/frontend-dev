@@ -43,20 +43,20 @@ import Header from "@/components/Header.vue";
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in resultFloorsMaterial" :key="index">
-          <td class="sub-title">{{ index }}</td>
-          <td>Доска 50*200*3000 Доска 50*200*3000 Доска 50*</td>
+        <tr v-for="(item, index) in materialsInfo">
+          <td class="sub-title">{{ item.material }}</td>
+          <td style="word-wrap: break-word;">{{item.name}}</td>
           <td class="sub-text">
-            {{getRub(getPriceInfo(index))}}
+            {{getRub(item.sellingPrice)}}
             <span class="sub-text operation">x</span>
-            30
+            {{ item.count }}
             <span class="sub-text operation">=</span>
-            {{getRub(55500)}}
+            <b>{{getRub(item.sum)}}</b>
           </td>
         </tr>
       </tbody>
       <tr>
-        <th>Итоговая сумма</th><td colspan="4" class="sub-title">{{getRub(736483)}}</td>
+        <th>Итоговая сумма</th><td colspan="4" class="sub-title">{{getRub(materialSum)}}</td>
       </tr>
     </table>
     <input type="submit" value="Рассчитать">
@@ -65,7 +65,7 @@ import Header from "@/components/Header.vue";
 </template>
 
 <script>
-import {getPrice} from "@/api.js";
+import {createCalculation, createElementFrame, getPrice} from "@/api.js";
 
 export default {
   components: {
@@ -92,7 +92,9 @@ export default {
       resultFloor: [{}],
       resultFloorsMaterial: {},
       calculation: {customerId: {id: parseInt(this.id) }, addressObjectConstractions: "", number: this.numbers, createdDate: new Date(), calculationStateId: {id: 1}},
-      pricelist: {}
+      pricelist: {},
+      materialsInfo: [],
+      materialSum: 0
     };
   },
   mounted() {
@@ -108,7 +110,6 @@ export default {
   },
   methods: {
     getPriceInfo(id) {
-      console.log(id + " = " + this.pricelist.find(material => String(material.materialCharacteristicsId.id) === 1));
       return this.pricelist.find(material => String(material.materialCharacteristicsId.id) === id);
     },
     duplicateFloors() {
@@ -145,6 +146,7 @@ export default {
     updateMaterials() {
       this.resultFloor = [];
       this.resultFloorsMaterial = {};
+      this.materialsInfo = [];
       this.$refs.allFloors.forEach(floor => {
         this.resultFloor[floor.floorData.currentFloor] = floor.getFloorData();
         for (const floorElement of this.resultFloor[floor.floorData.currentFloor].result) {
@@ -155,8 +157,25 @@ export default {
             this.resultFloorsMaterial[String(floorElement.id)] = parseFloat(floorElement.count);
           }
         }
-        console.log(this.resultFloorsMaterial);
       });
+
+      let info = {};
+      this.materialSum = 0;
+      for (const resultElement in this.resultFloorsMaterial) {
+        console.log("element " + resultElement);
+        info = this.getPriceInfo(resultElement);
+        if (info !== undefined) {
+          this.materialsInfo.push({
+            id: info.id,
+            material: info.materialCharacteristicsId.materialsId.materialType + ", " + info.materialCharacteristicsId.materialsId.name + " (" + info.materialCharacteristicsId.measurementUnitId.measurementUnitsName + ")",
+            name: info.materialCharacteristicsId.name,
+            sellingPrice: info.sellingPrice,
+            count: parseFloat(this.resultFloorsMaterial[resultElement]).toFixed(2),
+            sum: info.sellingPrice * this.resultFloorsMaterial[resultElement]
+          });
+          this.materialSum += info.sellingPrice * this.resultFloorsMaterial[resultElement];
+        }
+      }
     },
     getRub(number) {
       if (number !== undefined) {
@@ -168,20 +187,64 @@ export default {
       else return 0;
     },
     saveCalculation() {
-      // if (this.addres === "") {
-      //   console.log("нет")
-      // }
-      // else {
-      //   createCalculation(this.calculation)
-      //       .then(data => {
-      //         this.calculation = data;
-      //         this.$router.push({ path: "/calculation/" + this.calculation.id + "/" + this.id});
-      //       })
-      //       .catch(error => {
-      //         console.error("Произошла ошибка: ", error);
-      //       });
-      //   console.log(this.calculation);
-      // }
+      if (this.createMode === true) {
+        // if (this.addres === "") {
+        //   console.log("нет")
+        // }
+        // else {
+        //   createCalculation(this.calculation)
+        //       .then(data => {
+        //         this.calculation = data;
+        //         this.$router.push({ path: "/calculation/" + this.calculation.id + "/" + this.id});
+        //       })
+        //       .catch(error => {
+        //         console.error("Произошла ошибка: ", error);
+        //       });
+        //   console.log(this.calculation);
+        // }
+
+        let calculation = {
+          customer_id: {
+            id: this.id
+          },
+          address_object_constractions: this.addres,
+          number: this.numbers,
+          created_date: new Date(),
+          calculation_state_id: {
+            id: 1
+          }
+        };
+
+        let newCalculation = createCalculation(calculation);
+        if (newCalculation !== null) {
+          let structural_element_frame = {
+            amount_floor: this.floors.length,
+            calculation_id: {
+              id: newCalculation.id
+            }
+          };
+          let element_frame = createElementFrame(structural_element_frame);
+
+          let floorsData = [{}];
+          this.$refs.allFloors.forEach(floor => {
+
+            this.resultFloor[floor.floorData.currentFloor] = floor.getFloorData();
+            for (const floorElement of this.resultFloor[floor.floorData.currentFloor].result) {
+              if ( this.resultFloorsMaterial[String(floorElement.id)]) {
+                this.resultFloorsMaterial[String(floorElement.id)] += parseFloat(floorElement.count);
+              }
+              else {
+                this.resultFloorsMaterial[String(floorElement.id)] = parseFloat(floorElement.count);
+              }
+            }
+          });
+
+        }
+      }
+      else {
+        console.log("created = none");
+      }
+
 
     },
 

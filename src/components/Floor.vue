@@ -48,7 +48,7 @@
       <h3>Обшивки внешних стен</h3>
       <div class="table">
         <span>ОСБ</span>
-        <select v-model="floorData.dataOuterOverlap.OSB">
+        <select required v-model="floorData.dataOuterOverlap.OSB">
           <option disabled selected value="">Выберите опцию</option>
           <option v-for="option in availableOptionsOsb" :value="option.id">{{ option.nameOption }}</option>
         </select>
@@ -62,7 +62,7 @@
       </div>
       <div class="table">
         <span>Ветрозащита</span>
-        <select v-model="floorData.dataOuterOverlap.windProtection">
+        <select required v-model="floorData.dataOuterOverlap.windProtection">
           <option disabled selected value="">Выберите опцию</option>
           <option v-for="option in availableOptionsWindProtection" :value="option.id">{{ option.nameOption }}</option>
         </select>
@@ -86,7 +86,7 @@
         <br>
         <div class="table">
           <span>ОСБ</span>
-          <select v-model="floorData.osbInnerOvarlap">
+          <select required v-model="floorData.osbInnerOvarlap">
             <option disabled selected value="">Выберите опцию</option>
             <option v-for="option in availableOptionsOsb" :value="option.id">{{ option.nameOption }}</option>
           </select>

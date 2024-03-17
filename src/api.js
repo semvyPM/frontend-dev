@@ -160,6 +160,20 @@ export const createCalculation = async (calculation) => {
     });
 }
 
+export const createElementFrame = async (element) => {
+    const token = getToken();
+    return await instance.post("/api/calculations/element/create", element, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    }).then(response => {
+        console.log(response.data);
+        return response.data.id;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
+    });
+}
+
 export const getFloors = async (idcalculation) => {
     const token = getToken();
     return  await instance.get('/api/calculations/floors/' + idcalculation, {

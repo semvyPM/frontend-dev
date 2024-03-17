@@ -58,6 +58,10 @@ body {
     background-image: url("@/assets/img/1.png");
 }
 
+.disabledStyle {
+    margin-bottom: 0 !important;
+}
+
 .pass {
     margin-bottom: 35px;
     background-image: url("@/assets/img/2.png");
@@ -75,14 +79,21 @@ body {
     justify-content: center;
     font-weight: bold;
     margin-left:24%;
-    line-height: 30px;
-
-
+    line-height: 34px;
+    cursor: pointer;
     height: 35px;
     border-radius:7px;
     color: #2a622a;
     background-color: #ffc945;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.error-message {
+    background-color: #ffcccc;
+    color: #cc0000;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 13pt;
 }
 
 .close-button {

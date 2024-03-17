@@ -8,6 +8,12 @@ div, table, form, input {
 .logo{
     width: 100%;
     height: 130px;
+    border: 2px solid white;
+}
+.logo:hover {
+    cursor: pointer;
+    border: 2px solid rgba(53, 68, 53, 0.6);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 .logo > p{
     width: 100%;
@@ -29,12 +35,17 @@ div, table, form, input {
     border-bottom: 1.5px solid darkgreen;
 }
 
-.client_data{
+.client_data {
     font-size: 1em;
     color: #004600;
     padding-left: 50px;
     /*color: #3d4b58;*/
 }
+.client_data:hover {
+    cursor: pointer;
+    color: #dea008;
+}
+
 .employee{
     color: #004600;
     font-size: 1em;
@@ -49,11 +60,17 @@ div, table, form, input {
     background-image: url("@/assets/img/x.png");
     background-size: 100%;
 }
+.exit:hover {
+    cursor: pointer;
+    border: 1px solid lightgray;
+    border-radius: 50%;
+}
 .nav{
     display: grid;
     grid-template-columns: 10% 80% 10%;
     font-size: 20px;
 }
+
 .back{
     margin-left: 10px;
     margin-top: 10px;
@@ -61,6 +78,12 @@ div, table, form, input {
     height: 40px;
     background-image: url("@/assets/img/back.png");
     background-size: 100%;
+    border: 1px solid white;
+}
+.back:hover {
+    cursor: pointer;
+    border: 1px solid lightgray;
+    border-radius: 50%;
 }
 .carcass{
     color: #004600;
@@ -77,6 +100,16 @@ main{
 .adress > input[type='button']{
     height: 30px;
 }
+input[type='button']:hover  {
+    cursor: pointer;
+    background-color: #6b8864;
+}
+.adress > input[type='reset']:hover, input[type='submit']:hover  {
+    cursor: pointer;
+    color: white;
+    background-color: #6b8864;
+}
+
 .result-buttons input[type='button'] {
     margin: 5px;
     min-width: 200px;
@@ -168,6 +201,7 @@ select{
     height: 37.5px;
     border: 0;
     background-color: rgba(0, 0, 0, 0.226);
+    min-width: 260px;
 }
 .table{
     display: grid;
@@ -177,6 +211,7 @@ select{
 .plus{
     height: 35px;
     display: flex;
+    margin-top: 13px;
 
 }
 .result-buttons-add {
@@ -403,9 +438,13 @@ input[type='submit']{
     height: 100%;
     color: #2a622a;
     background-color: #ffc945;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     margin-bottom: 20px;
     text-align: center;
+    border: 2px solid white;
+}
+.element:hover {
+    cursor: pointer;
+    border: 2px solid darkgreen;
 }
 .element img{
     width: 70%;
@@ -479,7 +518,9 @@ input[type='submit']{
     width: 200px;
     margin-left: 10px;
     background-color: #ffc945;
-    color: #485043;
+    color: #313f2d;
+    font-weight: unset;
+    border: 1px solid #e7b12d;
 }
 .result{
     width: 1000px;
@@ -632,6 +673,7 @@ input[type='submit']{
 
 .materials-block .sub-text {
     text-align: right;
+    word-wrap: break-word;
 }
 
 .materials-block td {

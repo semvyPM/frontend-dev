@@ -16,7 +16,7 @@
       <div class="result-buttons">
         <input type="button" value="Редактировать" @click="togglePopup">
         <input type="button" value="Добавить конструктивный элемент" @click="togglePopup">
-        <ConstructionElementPopup v-if="showPopup" :idclient="idclient" :createMode="createMode" @close="showPopup = false"/>
+        <ConstructionElementPopup v-if="showPopup" :idclient="idclient" :createMode="createMode" :numbers="idcalculation" @close="showPopup = false"/>
       </div>
       <div v-if="showFloor">
       <div class="result-buttons-add">
