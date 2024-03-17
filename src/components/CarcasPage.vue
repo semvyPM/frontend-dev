@@ -65,7 +65,7 @@ import Header from "@/components/Header.vue";
 </template>
 
 <script>
-import {getPrice} from "@/api.js";
+import {createCalculation, createElementFrame, getPrice} from "@/api.js";
 
 export default {
   components: {
@@ -187,20 +187,64 @@ export default {
       else return 0;
     },
     saveCalculation() {
-      // if (this.addres === "") {
-      //   console.log("нет")
-      // }
-      // else {
-      //   createCalculation(this.calculation)
-      //       .then(data => {
-      //         this.calculation = data;
-      //         this.$router.push({ path: "/calculation/" + this.calculation.id + "/" + this.id});
-      //       })
-      //       .catch(error => {
-      //         console.error("Произошла ошибка: ", error);
-      //       });
-      //   console.log(this.calculation);
-      // }
+      if (this.createMode === true) {
+        // if (this.addres === "") {
+        //   console.log("нет")
+        // }
+        // else {
+        //   createCalculation(this.calculation)
+        //       .then(data => {
+        //         this.calculation = data;
+        //         this.$router.push({ path: "/calculation/" + this.calculation.id + "/" + this.id});
+        //       })
+        //       .catch(error => {
+        //         console.error("Произошла ошибка: ", error);
+        //       });
+        //   console.log(this.calculation);
+        // }
+
+        let calculation = {
+          customer_id: {
+            id: this.id
+          },
+          address_object_constractions: this.addres,
+          number: this.numbers,
+          created_date: new Date(),
+          calculation_state_id: {
+            id: 1
+          }
+        };
+
+        let newCalculation = createCalculation(calculation);
+        if (newCalculation !== null) {
+          let structural_element_frame = {
+            amount_floor: this.floors.length,
+            calculation_id: {
+              id: newCalculation.id
+            }
+          };
+          let element_frame = createElementFrame(structural_element_frame);
+
+          let floorsData = [{}];
+          this.$refs.allFloors.forEach(floor => {
+
+            this.resultFloor[floor.floorData.currentFloor] = floor.getFloorData();
+            for (const floorElement of this.resultFloor[floor.floorData.currentFloor].result) {
+              if ( this.resultFloorsMaterial[String(floorElement.id)]) {
+                this.resultFloorsMaterial[String(floorElement.id)] += parseFloat(floorElement.count);
+              }
+              else {
+                this.resultFloorsMaterial[String(floorElement.id)] = parseFloat(floorElement.count);
+              }
+            }
+          });
+
+        }
+      }
+      else {
+        console.log("created = none");
+      }
+
 
     },
 

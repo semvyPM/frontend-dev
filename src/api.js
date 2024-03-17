@@ -4,15 +4,15 @@ import router from "@/router.js";
 
 
 const instance = axios.create({
-    baseURL: "http://kalck.ru/",
-    // baseURL: "http://localhost:8080/",
+    // baseURL: "http://kalck.ru/",
+    baseURL: "http://localhost:8080/",
     headers: {
         "Content-Type": "application/json"
     }
 });
 
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://kalck.ru/';
-// axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8080/';
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://kalck.ru/';
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:8080/';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE';
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = '*';
 axios.defaults.withCredentials = true;
@@ -149,6 +149,20 @@ export const createCustomer = async (customer) => {
 export const createCalculation = async (calculation) => {
     const token = getToken();
     return await instance.post("/api/calculations/create", calculation, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    }).then(response => {
+        console.log(response.data);
+        return response.data.id;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
+    });
+}
+
+export const createElementFrame = async (element) => {
+    const token = getToken();
+    return await instance.post("/api/calculations/element/create", element, {
         headers: {
             Authorization: `Bearer ${token}`
         },
