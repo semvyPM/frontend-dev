@@ -457,6 +457,13 @@ input[type='submit']{
     padding-top: 15px;
     color: red;
 }
+.error-message {
+    color: #cc0000;
+    padding: 9px;
+    border-radius: 5px;
+    font-size: 12pt;
+    justify-content: center;
+}
 .element h3{
     margin: 0;
     margin-top: 7%;

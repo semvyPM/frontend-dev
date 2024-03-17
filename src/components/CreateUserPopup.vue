@@ -1,26 +1,27 @@
 <template>
-  <div class="popup">
+  <div class="popup" @click="closeModal">
     <div class="popup-content" >
       <span class="close" @click="closeModal">&times;</span>
       <h2>Введите данные:</h2>
       <form action="" class="create-customer-form" @submit.prevent="createCustomer">
         <label for="lastname">Фамилия:</label>
-        <input type="text" id="lastname" v-model="customer_lastname">
+        <input type="text" id="lastname" v-model="customer_lastname" required>
 
         <label for="firstname">Имя:</label>
-        <input type="text" id="firstname" v-model="customer_firstname">
+        <input type="text" id="firstname" v-model="customer_firstname" required>
 
         <label for="patronymic">Отчество:</label>
-        <input type="text" id="patronymic" v-model="customer_patronymic">
+        <input type="text" id="patronymic" v-model="customer_patronymic" required>
 
         <label for="phone">Телефон:</label>
-        <input type="text" id="phone" v-model="customer_phone">
+        <input type="text" id="phone" v-model="customer_phone" v-mask="'+7 (###) ### ##-##'" @blur="checkPhoneValidity" required>
 
         <label for="email">Email:</label>
-        <input type="text" id="email" v-model="customer_email">
+        <input type="text" id="email" v-model="customer_email" required>
 
         <label for="address">Адрес:</label>
-        <input type="text" id="address" v-model="customer_address">
+        <input type="email" id="address" v-model="customer_address" required>
+        <p class="error-message">{{ errorMsg }}</p>
 
         <input type="submit" value="Сохранить" class="save">
       </form>
@@ -29,9 +30,12 @@
 </template>
 
 <script>
+import axios from "axios";
+import {mask} from 'vue-the-mask';
 import {createCustomer} from "@/api.js";
 
 export default {
+  directives: {mask},
   data() {
     return {
       customer_lastname: "",
@@ -43,8 +47,20 @@ export default {
     };
   },
   methods: {
-    closeModal() {
-      this.$emit('close');
+    checkPhoneValidity() {
+      if (this.customer_phone.replace(/\D/g,'').length !== 11) {
+        this.errorMsg = 'Пожалуйста, укажите полный номер телефона в формате +7 (XXX) XXX XX-XX.';
+      } else {
+        this.errorMsg = ''; // Очищаем ошибку при успешном вводе номера
+      }
+    },
+    closeModal(event) {
+      if (!event.target.closest('.popup-content')) {
+        this.$emit('close');
+      }
+      else if (event.target.classList.contains('close')){
+        this.$emit('close');
+      }
     },
     async createCustomer() {
       const customer = {
