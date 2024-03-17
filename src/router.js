@@ -17,8 +17,8 @@ const routes = [
 const router = new createRouter({
     mode: history,
     history: createWebHistory(),
-    // base: "http://localhost:8080/",
-    base: "http://kalck.ru/",
+    base: "http://localhost:8080/",
+    // base: "http://kalck.ru/",
     routes
 });
 router.beforeEach((to, from, next) => {
