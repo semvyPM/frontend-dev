@@ -4,7 +4,13 @@
     <router-link :to="'/client/' + idclient"><div class="back"></div></router-link>
     <div class="carcass">
       <p>
-        Расчет <br> <input type="button" :value="calculation && calculation.calculationStateId ? calculation.calculationStateId.stateName : 'не установлен'" >
+        Расчет <br> <input v-if="!statusChanged" id="myButton" type="button" :value="buttonText" @click="handleButtonClick" :class="{ 'button-actual': buttonText === 'актуален', 'button-not-actual': buttonText === 'не актуален' }">
+    <div v-if="showContractButton">
+      <input v-if="!statusChanged" type="button" value="договор заключен" @click="handleContractButtonClick" class="button-contract">
+    </div>
+    <div v-if="showUpdateButton">
+      <input v-if="!statusChanged" type="button" value="актуализировать" @click="handleUpdateButtonClick" class="button-update">
+    </div>
       </p>
 
     </div>
@@ -83,7 +89,14 @@ export default {
   data() {
     return {
       clientData: true,
-      calculation: {},
+      calculation: {
+        calculationStateId: {
+          stateName: "актуален"
+        }
+      },
+      showContractButton: false,
+      showUpdateButton: false,
+      statusChanged: false,
       floors: {},
       basement: {},
       createMode: "false",
@@ -114,6 +127,12 @@ export default {
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize);
   },
+  computed: {
+    buttonText() {
+      return this.calculation && this.calculation.calculationStateId ? this.calculation.calculationStateId.stateName : 'не установлен';
+    }
+    
+  },
   methods: {
     handleResize() {
       this.currentComponent = window.innerWidth < 768 ? 'BlockResult' : 'TableResult';
@@ -143,8 +162,30 @@ export default {
 
     getSumByType(arr, field) {
       return arr.reduce((accumulator, currentValue) => accumulator + currentValue[field], 0);
+    },
+    handleButtonClick() {
+      if (this.buttonText === "актуален") {
+        this.showContractButton = true;
+        this.showUpdateButton = false;
+      } else if (this.buttonText === "не актуален") {
+        this.showUpdateButton = true;
+        this.showContractButton = false;
+      }
+    },
+    handleContractButtonClick() {
+    axios.put(`/api/calculations/${id}/${statusId}`)
+      .then(response => {
+        alert("Статус изменен!");
+        this.statusChanged = true; // Устанавливаем флаг, чтобы скрыть первую кнопку
+      })
+      .catch(error => {
+        console.error("Ошибка при изменении статуса:", error);
+      });
+  },
+    handleUpdateButtonClick() {
+      alert("Статус актуализирован!");
+      
     }
-
   }
 }
 </script>

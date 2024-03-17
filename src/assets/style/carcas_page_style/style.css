@@ -593,3 +593,25 @@ input[type='submit']{
     display: flex;
     flex-wrap: wrap;
 }
+/* Стили кнопок статуса расчета */
+
+#myButton.button-actual {
+    border: 3px solid rgb(0, 230, 0);
+    background-color: #597359;
+}
+  
+#myButton.button-not-actual {
+    border: 3px solid red;
+    background-color: #597359;
+}
+  
+#myButton.button-contract {
+    background-color: green;
+    color: white;
+}
+  
+#myButton.button-update {
+    background-color: red;
+    color: white;
+}
+/* ___________________ */
