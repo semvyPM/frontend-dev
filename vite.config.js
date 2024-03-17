@@ -17,8 +17,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        // target: 'http://kalck.ru/', // заменить на URL
-        target: 'http://localhost:8080/', // заменить на URL
+        target: 'http://kalck.ru/', // заменить на URL
+        // target: 'http://localhost:8080/', // заменить на URL
         changeOrigin: true
         // rewrite: (path) => path.replace(/^\/api/, '')
       }
