@@ -17,10 +17,10 @@
         <input type="text" id="phone" v-model="customer_phone" v-mask="'+7 (###) ### ##-##'" @blur="checkPhoneValidity" required>
 
         <label for="email">Email:</label>
-        <input type="text" id="email" v-model="customer_email" required>
+        <input type="email" id="email" v-model="customer_email" required>
 
         <label for="address">Адрес:</label>
-        <input type="email" id="address" v-model="customer_address" required>
+        <input type="text" id="address" v-model="customer_address" required>
         <p class="error-message">{{ errorMsg }}</p>
 
         <input type="submit" value="Сохранить" class="save">
