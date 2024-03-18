@@ -10,8 +10,8 @@ import ClientInfoPopup from "@/components/ClientInfoPopup.vue";
       <LogoTest @click="signOut"/>
     </div>
     <div class="client_data">
-      <div v-if="clientData" @click="openClientInfoPopup">
-        <ClientInfoPopup v-if="showPopup" @close="showPopup = false" :clientObject="clientObject"/>
+      <div v-if="clientData" @click="showPopup = true">
+        <ClientInfoPopup v-if="showPopup" @closePop="showPopup = false" :clientObject="clientObject"/>
         <p><b>Клиент</b><br></p>
         <p>
           <span>{{ clientObject.lastName }} {{ clientObject.firstName }} {{ clientObject.secondName }}</span> <br>
@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     openClientInfoPopup() {
-      this.showPopup = !this.showPopup
+      this.showPopup = true
     }
   }
 }

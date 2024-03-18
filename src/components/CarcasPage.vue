@@ -18,12 +18,12 @@ import Header from "@/components/Header.vue";
 <main>
   <form @submit.prevent="saveCalculation">
     <div class="adress">
-      <input type="text" placeholder="Введите адрес объекта строительства" v-model="addres" :readonly="isReadOnly">
+      <input type="text" placeholder="Введите адрес объекта строительства" v-model="addres" :readonly="isReadOnly" required>
       <input type="button" value="Сохранить" @click="saveAddress" v-if="!isReadOnly">
       <input type="reset" value="Очистить расчет">
     </div>
     <h3>Исходные данные</h3>
-    <div class="table floorsInput">Количество этажей <input type="number" placeholder="Введите число этажей" v-model="floorsCount" @change="duplicateFloors"> </div>
+    <div class="table floorsInput">Количество этажей <input required min="1" type="number" placeholder="Введите число этажей" v-model="floorsCount" @change="duplicateFloors"> </div>
     <div v-for="(currentFloor, index) in floors" :key="index">
       <h3>Этаж: {{ index + 1 }}</h3>
       <Floor ref="allFloors" :currentFloor="index"
@@ -65,7 +65,7 @@ import Header from "@/components/Header.vue";
 </template>
 
 <script>
-import {createCalculation, createElementFrame, getPrice} from "@/api.js";
+import {createCalculation, createElementFrame, getPrice, postCalculationData} from "@/api.js";
 
 export default {
   components: {
@@ -110,7 +110,9 @@ export default {
   },
   methods: {
     getPriceInfo(id) {
-      return this.pricelist.find(material => String(material.materialCharacteristicsId.id) === id);
+      console.log("by id " + id);
+      console.log("finded " + this.pricelist.find(material => String(material.materialCharacteristicsId.id) === String(id)));
+      return this.pricelist.find(material => String(material.materialCharacteristicsId.id) === String(id));
     },
     duplicateFloors() {
       // Обновляем количество этажей в соответствии с введенным числом
@@ -162,11 +164,11 @@ export default {
       let info = {};
       this.materialSum = 0;
       for (const resultElement in this.resultFloorsMaterial) {
-        console.log("element " + resultElement);
         info = this.getPriceInfo(resultElement);
         if (info !== undefined) {
           this.materialsInfo.push({
             id: info.id,
+            materialId: info.materialCharacteristicsId.id,
             material: info.materialCharacteristicsId.materialsId.materialType + ", " + info.materialCharacteristicsId.materialsId.name + " (" + info.materialCharacteristicsId.measurementUnitId.measurementUnitsName + ")",
             name: info.materialCharacteristicsId.name,
             sellingPrice: info.sellingPrice,
@@ -186,62 +188,115 @@ export default {
       }
       else return 0;
     },
-    saveCalculation() {
-      if (this.createMode === true) {
-        // if (this.addres === "") {
-        //   console.log("нет")
-        // }
-        // else {
-        //   createCalculation(this.calculation)
-        //       .then(data => {
-        //         this.calculation = data;
-        //         this.$router.push({ path: "/calculation/" + this.calculation.id + "/" + this.id});
-        //       })
-        //       .catch(error => {
-        //         console.error("Произошла ошибка: ", error);
-        //       });
-        //   console.log(this.calculation);
-        // }
+    async saveCalculation() {
+      if (this.createMode === "true") {
 
-        let calculation = {
-          customer_id: {
-            id: this.id
+        this.updateMaterials();
+        let calculationData = {
+          customerId: {
+            id: parseInt(this.id)
           },
-          address_object_constractions: this.addres,
+          addressObjectConstractions: this.addres,
           number: this.numbers,
-          created_date: new Date(),
-          calculation_state_id: {
+          createdDate: new Date(),
+          calculationStateId: {
             id: 1
           }
         };
 
-        let newCalculation = createCalculation(calculation);
+        console.log(calculationData);
+        // запрос на создание расчета
+        let newCalculation = await createCalculation(calculationData);
+        console.log("NEW " + newCalculation);
         if (newCalculation !== null) {
           let structural_element_frame = {
-            amount_floor: this.floors.length,
-            calculation_id: {
-              id: newCalculation.id
+            amountFloor: this.floors.length,
+            calculationId: {
+              id: parseInt(newCalculation.id)
             }
           };
-          let element_frame = createElementFrame(structural_element_frame);
+          // запрос на создание структурного элемента - каркас
+          let element_frame = await createElementFrame(structural_element_frame);
 
-          let floorsData = [{}];
+
+          console.log("ELEMENT " + element_frame);
+          let floorsPost = [];
           this.$refs.allFloors.forEach(floor => {
-
-            this.resultFloor[floor.floorData.currentFloor] = floor.getFloorData();
-            for (const floorElement of this.resultFloor[floor.floorData.currentFloor].result) {
-              if ( this.resultFloorsMaterial[String(floorElement.id)]) {
-                this.resultFloorsMaterial[String(floorElement.id)] += parseFloat(floorElement.count);
-              }
-              else {
-                this.resultFloorsMaterial[String(floorElement.id)] = parseFloat(floorElement.count);
+            console.log("FLOOR      " + floor.floorData);
+            console.log("FLOOR RESULT      " + floor.floorData.osbInnerOvarlap);
+            // массив отверстий - логика в отправке массива с данными openings, создать для них Request
+            // запрос на создание данных этажа с дополнительным массивом add и данными result
+            let floorDataRequest = {
+              floorNumber: floor.floorData.currentFloor + 1,
+              floorHeight: floor.floorData.floorMainData.heightFloor,
+              perimeterOfExternalWalls: floor.floorData.floorMainData.perimetrOuterWalls,
+              baseArea: floor.floorData.floorMainData.baseArea,
+              externalWallThickness: floor.floorData.floorMainData.thicknessOuterWalls,
+              internalWallLength: floor.floorData.floorMainData.lengthInnerWalls,
+              internalWallThickness: floor.floorData.floorMainData.thicknessInnerWalls,
+              slabThickness: floor.floorData.dataOverlap.slabThickness,
+              structuralElementFrameId:
+                  {
+                    id: element_frame.id
+                  }
+            };
+            let openings = [];
+            if (floor.floorData.itemsWindow.length > 0) {
+              for (const window of floor.floorData.itemsWindow) {
+                openings.push({type: "Оконный", height: window.heightWindow, width: window.widthWindow, amount: window.quantityWindow});
               }
             }
+            if (floor.floorData.itemsDoorsOut.length > 0) {
+              for (const doorOut of floor.floorData.itemsDoorsOut) {
+                openings.push({type: "Дверные внешние", height: doorOut.heightDoorsOut, width: doorOut.widthDoorsOut, amount: doorOut.quantityDoorsOut});
+              }
+            }
+            if (floor.floorData.itemsDoorsInner.length > 0) {
+              for (const door of floor.floorData.itemsDoorsInner) {
+                openings.push({type: "Дверные внутренние", height: door.heightDoorsInner, width: door.widthDoorsInner, amount: door.quantityDoorsInner});
+              }
+            }
+
+            let results = [];
+            let info = {};
+            let resultsData = floor.getFloorData();
+            for (const resultElement of resultsData.result) {
+              info = this.getPriceInfo(resultElement.id);
+              results.push({amount: resultElement.count, price: info.sellingPrice, fullPrice: parseFloat(parseFloat(info.sellingPrice) * parseFloat(resultElement.count)).toFixed(2), materialCharacteristics: {id: info.materialCharacteristicsId.id}, resultTypeFloorFrame: {id: resultElement.typeConstruction}});
+            }
+            let floorAdd = [];
+            if (floor.floorData.showTable) {
+              floorAdd.push({typeAdd: {id : 6}, materialCharacteristics: {id: floor.floorData.osbInnerOvarlap}});
+            }
+            if (floor.floorData.overlapInputsShow) {
+              floorAdd.push({typeAdd: {id : 1}, materialCharacteristics: {id: floor.floorData.dataOverlap.OSB}});
+              floorAdd.push({typeAdd: {id : 3}, materialCharacteristics: {id: floor.floorData.dataOverlap.steamAndWaterproofing}});
+              floorAdd.push({typeAdd: {id : 5}, materialCharacteristics: {id: floor.floorData.dataOverlap.windProtection}});
+              floorAdd.push({typeAdd: {id : 4}, materialCharacteristics: {id: floor.floorData.dataOverlap.insulation}});
+            }
+            if (floor.floorData.openOuterWallsShow) {
+              floorAdd.push({typeAdd: {id : 10}, materialCharacteristics: {id: floor.floorData.dataOuterOverlap.OSB}});
+              floorAdd.push({typeAdd: {id : 9}, materialCharacteristics: {id: floor.floorData.dataOuterOverlap.steamAndWaterproofing}});
+              floorAdd.push({typeAdd: {id : 8}, materialCharacteristics: {id: floor.floorData.dataOuterOverlap.windProtection}});
+              floorAdd.push({typeAdd: {id : 7}, materialCharacteristics: {id: floor.floorData.dataOuterOverlap.insulation}});
+            }
+
+            let floorDataPost = {
+              floorData: floorDataRequest,
+              openingsList: openings,
+              resultsFrames: results,
+              floorDataAdds: floorAdd
+            }
+            floorsPost.push(floorDataPost);
           });
 
+          for (const floorsPostElement of floorsPost) {
+            console.log(floorsPostElement);
+            await postCalculationData(floorsPostElement);
+          }
+          this.$router.push({ path: "/calculation/" + newCalculation.id + "/" + this.id});
         }
-      }
-      else {
+      } else {
         console.log("created = none");
       }
 

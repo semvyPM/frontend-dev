@@ -412,7 +412,7 @@ input[type='submit']{
 
 .popup-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 7% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 40%;
@@ -505,6 +505,25 @@ input[type='submit']{
 .create-customer-form input[type='submit'], .create-customer-form input[type='button'] {
     margin-top: 15px;
     width: 200px;
+}
+
+/* Стили кнопок статуса расчета */
+
+#myButton.button-actual {
+    background-color: #597359;
+}
+
+#myButton.button-not-actual {
+    background-color: #597359;
+}
+
+#myButton.button-contract {
+    background-color: green;
+    color: white;
+}
+
+#myButton.button-update {
+    color: white;
 }
 
 .create-customer-form > label {

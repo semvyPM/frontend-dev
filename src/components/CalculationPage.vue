@@ -4,7 +4,16 @@
     <router-link :to="'/client/' + idclient"><div class="back"></div></router-link>
     <div class="carcass">
       <p>
-        Расчет <br> <input type="button" :value="calculation && calculation.calculationStateId ? calculation.calculationStateId.stateName : 'не установлен'" >
+        Расчет № {{calculation.number}} <br> <input v-if="!statusChanged" id="myButton" type="button" :value="buttonText" @click="handleButtonClick" :class="{ 'button-actual': buttonText === 'актуален', 'button-not-actual': buttonText === 'не актуален' }">
+        <div v-if="showContractButton">
+          <input v-if="!statusChanged" type="button" value="договор заключен" @click="handleButtonClickChange(3)" class="button-contract">
+        </div>
+        <div v-if="showUpdateButton">
+          <input v-if="!statusChanged" type="button" value="актуализировать" @click="handleButtonClickChange(1)" class="button-update">
+        </div>
+        <div v-if="showDisableButton">
+          <input v-if="!statusChanged" type="button" value="не актуален" @click="handleButtonClickChange(2)" class="button-update">
+        </div>
       </p>
 
     </div>
@@ -72,7 +81,7 @@ import Header from "@/components/Header.vue";
 import BlockResult from "@/components/BlockResult.vue";
 import TableResult from "@/components/TableResult.vue";
 import axios from "axios";
-import {getCalculation, getFloors, getBasementData, getBasement} from "@/api.js";
+import {getCalculation, getFloors, getBasementData, getBasement, changeStatus} from "@/api.js";
 import { saveAs } from 'file-saver';
 import * as ExcelJS from "exceljs";
 
@@ -86,6 +95,10 @@ export default {
     return {
       clientData: true,
       calculation: {},
+      showContractButton: false,
+      showUpdateButton: false,
+      statusChanged: false,
+      showDisableButton: false,
       floors: {},
       basements: {},
       createMode: "false",
@@ -131,6 +144,12 @@ export default {
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize);
   },
+  computed: {
+    buttonText() {
+      return this.calculation && this.calculation.calculationStateId ? this.calculation.calculationStateId.stateName : 'не установлен';
+    }
+
+  },
   methods: {
     handleResize() {
       this.currentComponent = window.innerWidth < 768 ? 'BlockResult' : 'TableResult';
@@ -157,11 +176,38 @@ export default {
       const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       saveAs(blob, 'exported_data.xlsx');
     },
-
     getSumByType(arr, field) {
       return arr.reduce((accumulator, currentValue) => accumulator + currentValue[field], 0);
+    },
+    handleButtonClick() {
+      if (this.buttonText === "актуален") {
+        this.showContractButton = !this.showContractButton;
+        this.showUpdateButton = false;
+        this.showDisableButton = !this.showDisableButton;
+      } else if (this.buttonText === "не актуален") {
+        this.showUpdateButton = !this.showUpdateButton;
+        this.showContractButton = !this.showContractButton;
+        this.showDisableButton = false;
+      } else if (this.buttonText === "заключен договор") {
+        this.showUpdateButton = !this.showUpdateButton;
+        this.showContractButton = false;
+        this.showDisableButton = !this.showDisableButton;
+      }
+    },
+    async handleButtonClickChange(statusId) {
+      console.log(this.calculation);
+      this.calculation.calculationStateId = {id: statusId};
+      await changeStatus(this.calculation)
+          .then(data => {
+            this.calculation = data;
+            this.showUpdateButton = false;
+            this.showContractButton = false;
+            this.showDisableButton = false;
+          })
+          .catch(error => {
+            console.error("Ошибка при изменении статуса:", error);
+          });
     }
-
   }
 }
 </script>

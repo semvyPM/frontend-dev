@@ -146,6 +146,33 @@ export const createCustomer = async (customer) => {
 
 }
 
+export const updateCustomer = async (customer) => {
+    const token = getToken();
+    return await instance.put("/api/clients/update", customer, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    }).then(response => {
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
+    });
+
+}
+
+export const changeStatus = async (calculation) => {
+    const token = getToken();
+    return await instance.put('/api/calculations/status', calculation, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    }).then(response => {
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
+    });
+}
+
 export const createCalculation = async (calculation) => {
     const token = getToken();
     return await instance.post("/api/calculations/create", calculation, {
@@ -154,7 +181,7 @@ export const createCalculation = async (calculation) => {
         },
     }).then(response => {
         console.log(response.data);
-        return response.data.id;
+        return response.data;
     }).catch(reportError => {
         return checkStatus(reportError.response);
     });
@@ -162,13 +189,27 @@ export const createCalculation = async (calculation) => {
 
 export const createElementFrame = async (element) => {
     const token = getToken();
-    return await instance.post("/api/calculations/element/create", element, {
+    return await instance.post("/api/calculations/frame/create", element, {
         headers: {
             Authorization: `Bearer ${token}`
         },
     }).then(response => {
         console.log(response.data);
-        return response.data.id;
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
+    });
+}
+
+export const postCalculationData = async (floorData) => {
+    const token = getToken();
+    return await instance.post("/api/calculations/floordata/create", floorData, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
     }).catch(reportError => {
         return checkStatus(reportError.response);
     });
@@ -227,5 +268,32 @@ export const getPrice = async () => {
         return response.data;
     }).catch(reportError => {
         return checkStatus(reportError.response);
+    });
+}
+
+export const copyCalculation = async (id) => {
+    const token = getToken();
+    return  await instance.get('/api/calculations/copy/' + id, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    }).then(response => {
+        console.log(response.data);
+        return response.data;
+    }).catch(reportError => {
+        return checkStatus(reportError.response);
+    });
+}
+
+export const deleteCalculation = async (id) => {
+    const token = getToken();
+    return  await instance.delete('/api/calculations/delete/' + id, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    }).then(response => {
+        console.log(response.data);
+    }).catch(reportError => {
+        return reportError.response.status;
     });
 }

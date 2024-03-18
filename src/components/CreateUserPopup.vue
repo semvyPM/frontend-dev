@@ -43,7 +43,8 @@ export default {
       customer_patronymic: "",
       customer_phone: "",
       customer_email: "",
-      customer_address: ""
+      customer_address: "",
+      errorMsg: ""
     };
   },
   methods: {
